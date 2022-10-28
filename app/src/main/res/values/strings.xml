@@ -4,4 +4,37 @@
     <string name="title_list">List</string>
     <string name="title_offers">Offers</string>
     <string name="title_search">Search</string>
+
+    <string-array name="values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+
+    <string-array name="options">
+        <item>Options ▼</item>
+        <item>Healthy</item>
+        <item>Cheap</item>
+        <item>Oko</item>
+    </string-array>
+
+    <string-array name="supermarkets">
+        <item>Stores ▼</item>
+        <item>Coop</item>
+        <item>Bilka</item>
+        <item>Fakta</item>
+    </string-array>
+
+    <string-array name="price">
+        <item>Price ▼</item>
+        <item>0-20</item>
+        <item>20-50</item>
+        <item>50-100</item>
+    </string-array>
 </resources>

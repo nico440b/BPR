@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,34 +15,26 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bpr.databinding.FragmentListBinding;
+import com.example.bpr.MainActivity;
+import com.example.bpr.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListFragment extends Fragment {
 
-    private ListViewModel listViewModel;
-    private FragmentListBinding binding;
+    Spinner dropdown;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        listViewModel =
-                new ViewModelProvider(this).get(ListViewModel.class);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        binding = FragmentListBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinnerAmount);
+        List<String> values = new ArrayList<String>();
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.values));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
 
-        final TextView textView = binding.textList;
-        listViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+        return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }
