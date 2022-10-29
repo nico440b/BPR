@@ -50,59 +50,68 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <CheckBox
+                        android:id="@+id/checkBox"
+                        android:layout_width="30dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_height="match_parent"
+                        android:buttonTint="@color/peach"/>
+
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:contentDescription="image"
                         android:src="@mipmap/img_oats_foreground" />
 
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="140dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/productNameText"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginEnd="8dp"
                             android:text="Name"
-                            android:textSize="20sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/brandNameText"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="8dp"
                             android:text="Brand"
-                            android:textSize="14sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
-                           <TextView
-                               android:layout_width="wrap_content"
-                               android:layout_height="wrap_content"
-                               android:text="Amount: "
-                               android:textSize="20sp"
-                               android:textColor="@color/black"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:text="Amount: "
+                                android:textColor="@color/black"
+                                android:textSize="20sp" />
 
                             <Spinner
                                 android:id="@+id/spinnerAmount"
                                 android:layout_width="74dp"
-                                android:layout_height="30dp" />
+                                android:layout_height="30dp"
+                                android:layout_marginTop="7dp" />
 
 
                             <View
@@ -110,16 +119,16 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1" />
 
-                            <ImageButton
-                                android:id="@+id/favoriteButton"
-                                android:layout_width="50dp"
-                                android:layout_height="30dp"
-                                android:background="@color/white"
-                                android:layout_gravity="right"
-                                android:src="@drawable/ic_baseline_favorite_border_24" />
 
                         </LinearLayout>
                     </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/deleteButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/delete_button"
+                        android:backgroundTint="@color/white"
+                        />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

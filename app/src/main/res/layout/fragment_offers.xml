@@ -103,7 +103,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="30dp"
+                        android:layout_marginRight="10dp"
                         android:contentDescription="image"
                         android:src="@mipmap/img_oats_foreground" />
 
@@ -138,26 +138,30 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
-                        <Button
-                            android:id="@+id/addToCartButton"
-                            android:layout_width="55dp"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:drawableLeft="@drawable/ic_baseline_add_shopping_cart_24" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/addToCartButton"
+                                android:layout_width="170dp"
+                                android:layout_height="38dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                android:backgroundTint="#949494"
+                                app:icon="@drawable/ic_baseline_add_shopping_cart_24"
+                                app:iconGravity="textStart" />
 
                             <View
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:layout_weight="1" />
 
-                        <ImageButton
-                            android:id="@+id/favoriteButton"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:background="@color/white"
-                            android:layout_gravity="right"
-                            android:src="@drawable/ic_baseline_favorite_border_24" />
-
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/favoriteButton"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/white"
+                                />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

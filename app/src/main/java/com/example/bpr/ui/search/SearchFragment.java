@@ -1,5 +1,7 @@
 package com.example.bpr.ui.search;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,6 +23,7 @@ import com.example.bpr.MainActivity;
 import com.example.bpr.MyAdapter;
 import com.example.bpr.R;
 import com.example.bpr.SpinnerStateV0;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +31,17 @@ import java.util.List;
 public class SearchFragment extends Fragment {
 
     Spinner dropdown;
+    boolean isPlay = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        MaterialButton addToCart;
+        addToCart = view.findViewById(R.id.addToCartButton);
+
+        MaterialButton favorite;
+        favorite = view.findViewById(R.id.favoriteButton);
+        favorite.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
 
         Spinner spinnerOptions = (Spinner) view.findViewById(R.id.optionsFilter);
         Spinner spinnerStores = (Spinner) view.findViewById(R.id.supermarketsFilter);
@@ -72,7 +85,39 @@ public class SearchFragment extends Fragment {
         MyAdapter adapterPrice = new MyAdapter(getActivity().getApplicationContext(), 0, listPrice);
         spinnerPrice.setAdapter(adapterPrice);
 
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // functionality
+                Toast.makeText(getActivity().getApplicationContext(), "Product added to shopping cart", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isPlay){
+                    view.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
+                }
+                else {
+                    view.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
+                }
+                isPlay = !isPlay;
+                Toast.makeText(getActivity().getApplicationContext(), "Added to fav", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
+
+    //-----------MAYBE USE SHARED PREFERENCES FOR STORING FAVORITES------------//
+//    public void addToFav(String name, String brand, int amount){
+//        SharedPreferences sharedPreferences = getContext().getSharedPreferences("SharedPref", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("name", name);
+//        editor.putString("brand", name);
+//        editor.putInt("amount", amount);
+//        editor.commit();
+//    }
 
 }
