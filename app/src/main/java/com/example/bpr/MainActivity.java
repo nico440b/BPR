@@ -1,8 +1,10 @@
 package com.example.bpr;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Header;
@@ -17,6 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -43,31 +47,29 @@ public class MainActivity extends AppCompatActivity {
     private CoopStoreCore core = new CoopStoreCore();
     private Converters converters = new Converters();
     private List<CoopProducts> coopProducts;
+    private CoopProductsViewModel coopProductsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
         //core = network.CoopStoreAPI();
-        coopProducts = network.CoopProductsAPI();
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "databasetest").allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
-        CoopStoreDao coopStoreDao = db.coopStoreDao();
-        CoopProductsDao coopProductsDao = db.coopProductsDao();
-        /*
-        coopStoreDao.insertAll(core);
-        CoopStoreCore testCore = new CoopStoreCore();
-        testCore = coopStoreDao.getAll();
-        Log.e("Rest Respone", "testCore.apiVersion");
-        Log.e("Rest Respone", testCore.apiVersion);
+        //coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
+        coopProductsViewModel.getProducts().observe(this, new Observer<List<CoopProducts>>() {
+            @Override
+            public void onChanged(List<CoopProducts> coopProducts) {
+                Toast.makeText(MainActivity.this, "Changed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-         */
-        coopProductsDao.insertAll(coopProducts);
-        List<CoopProducts> test;
 
-        test = coopProductsDao.getAll();
-        //Log.e("Rest Respone", test.get(0).navn);
+
+
+
+
+
+
 
 
 
