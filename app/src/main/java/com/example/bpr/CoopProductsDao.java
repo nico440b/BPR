@@ -13,7 +13,7 @@ import java.util.List;
 public interface CoopProductsDao {
 
     @Query("Select * From coopproducts")
-    List<CoopProducts> getAll();
+    LiveData<List<CoopProducts>> getAll();
 
     @Insert
     void insertAll(List<CoopProducts> coopProducts);
