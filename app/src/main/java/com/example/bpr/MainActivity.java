@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        test = coopProductsDao.getAll();
         //Log.e("Rest Respone", test.get(0).navn);
     }
     private void signIn(String email,String password){
