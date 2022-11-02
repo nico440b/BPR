@@ -30,6 +30,7 @@ public class NetworkImpl {
 
 
     public ArrayList<CoopProducts> getCoopProducts(final VolleyCallBack callBack) {
+        //gets all products for a specific store
         String URL = "https://api.cl.coop.dk/productapi/v1/product/24181";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
         ArrayList<CoopProducts> coopProductsList = new ArrayList<CoopProducts>();
@@ -78,6 +79,7 @@ public class NetworkImpl {
         return coopProductsList;
     }
     public CoopStoreCore getCoopStores() {
+        //returns all stores in a vicinity of the user based on their gps coordinates and how big of a radius they have decided
         String URL = "https://api.cl.coop.dk/storeapi/v1/stores/find/radius/2000?latitude=55.857543&longitude=9.838736";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
 
@@ -115,6 +117,7 @@ public class NetworkImpl {
         return main;
     }
     public ArrayList<CoopProducts> getStandardCoopProducts() {
+        //gets only the standard products for a specific store
         String URL = "https://api.cl.coop.dk/assortmentapi/v1/product/24181";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
         ArrayList<CoopProducts> coopProductsList = new ArrayList<CoopProducts>();
