@@ -18,6 +18,9 @@ public interface CoopProductsDao {
     @Insert
     void insertAll(List<CoopProducts> coopProducts);
 
+    @Insert
+    void insertOne(CoopProducts coopProducts);
+
     @Query("Delete From coopproducts")
     void deleteAll();
 
