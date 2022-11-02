@@ -1,4 +1,4 @@
-package com.example.bpr;
+package com.example.bpr.MVVM;
 
 import android.view.View;
 import android.view.ViewGroup;

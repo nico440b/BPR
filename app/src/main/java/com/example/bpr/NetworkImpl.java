@@ -11,6 +11,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.bpr.Objects.CoopProducts;
+import com.example.bpr.Objects.CoopStoreCore;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -27,7 +29,7 @@ public class NetworkImpl {
 
 
 
-    public ArrayList<CoopProducts> CoopProductsAPI(final VolleyCallBack callBack) {
+    public ArrayList<CoopProducts> getCoopProducts(final VolleyCallBack callBack) {
         String URL = "https://api.cl.coop.dk/productapi/v1/product/24181";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
         ArrayList<CoopProducts> coopProductsList = new ArrayList<CoopProducts>();
@@ -75,11 +77,11 @@ public class NetworkImpl {
         Log.e("Rest Respone", coopProductsList.size() + "");
         return coopProductsList;
     }
-    public CoopStoreCore CoopStoreAPI() {
+    public CoopStoreCore getCoopStores() {
         String URL = "https://api.cl.coop.dk/storeapi/v1/stores/find/radius/2000?latitude=55.857543&longitude=9.838736";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
 
-        CoopStoreCore core = new CoopStoreCore();
+       CoopStoreCore core = new CoopStoreCore();
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -112,7 +114,7 @@ public class NetworkImpl {
         requestQueue.add(objectRequest);
         return main;
     }
-    public ArrayList<CoopProducts> CoopAssortmentAPI() {
+    public ArrayList<CoopProducts> getStandardCoopProducts() {
         String URL = "https://api.cl.coop.dk/assortmentapi/v1/product/24181";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
         ArrayList<CoopProducts> coopProductsList = new ArrayList<CoopProducts>();

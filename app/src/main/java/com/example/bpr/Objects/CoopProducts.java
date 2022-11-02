@@ -1,4 +1,4 @@
-package com.example.bpr;
+package com.example.bpr.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

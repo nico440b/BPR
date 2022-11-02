@@ -1,4 +1,4 @@
-package com.example.bpr;
+package com.example.bpr.MVVM;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -7,9 +7,16 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.example.bpr.Converters;
+import com.example.bpr.Dao.CoopProductsDao;
+import com.example.bpr.Dao.CoopStoreDao;
+import com.example.bpr.NetworkImpl;
+import com.example.bpr.Objects.CoopProducts;
+import com.example.bpr.Objects.CoopStoreCore;
+import com.example.bpr.VolleyCallBack;
 
 import java.util.List;
 
@@ -55,7 +62,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            network.CoopProductsAPI(new VolleyCallBack() {
+            network.getCoopProducts(new VolleyCallBack() {
                 @Override
                 public void onSuccess(List<CoopProducts> result) {
                     list = result;

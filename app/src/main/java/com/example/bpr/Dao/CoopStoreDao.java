@@ -1,4 +1,4 @@
-package com.example.bpr;
+package com.example.bpr.Dao;
 
 
 import androidx.room.Dao;
@@ -6,7 +6,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.List;
+import com.example.bpr.Objects.CoopStore;
+import com.example.bpr.Objects.CoopStoreCore;
 
 
 @Dao

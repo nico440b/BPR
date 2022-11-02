@@ -1,10 +1,12 @@
-package com.example.bpr;
+package com.example.bpr.MVVM;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.bpr.Objects.CoopProducts;
 
 import java.util.List;
 
