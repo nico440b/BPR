@@ -1,6 +1,6 @@
 package com.example.bpr;
 
-import android.arch.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private NetworkImpl network = new NetworkImpl();
     private CoopStoreCore core = new CoopStoreCore();
     private Converters converters = new Converters();
+
     private List<CoopProducts> coopProducts;
     private CoopProductsViewModel coopProductsViewModel;
 
@@ -54,14 +55,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
         //core = network.CoopStoreAPI();
-
-        //coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
+        coopProducts = network.CoopProductsAPI();
+        coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         coopProductsViewModel.getProducts().observe(this, new Observer<List<CoopProducts>>() {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {
                 Toast.makeText(MainActivity.this, "Changed", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+        /*
+        coopProductsViewModel.insert(coopProducts.get(0));
+        LiveData<List<CoopProducts>> test;
+        test = coopProductsViewModel.getProducts();
+
+
+         */
+
+        //Log.e("Rest Respone", coopProducts.get(0).navn);
+
+
+
 
 
 

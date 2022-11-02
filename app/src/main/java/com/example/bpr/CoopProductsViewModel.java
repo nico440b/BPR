@@ -17,7 +17,7 @@ public class CoopProductsViewModel extends AndroidViewModel {
         products = repository.getAllProducts();
     }
 
-    public void insert(List<CoopProducts> coopProducts)
+    public void insert(CoopProducts coopProducts)
     {
         repository.insert(coopProducts);
     }

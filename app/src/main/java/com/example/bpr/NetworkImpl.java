@@ -24,10 +24,14 @@ import java.util.Map;
 public class NetworkImpl {
     CoopStoreCore main = new CoopStoreCore();
 
+
+
+
     public ArrayList<CoopProducts> CoopProductsAPI() {
         String URL = "https://api.cl.coop.dk/productapi/v1/product/24181";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
         ArrayList<CoopProducts> coopProductsList = new ArrayList<CoopProducts>();
+
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -40,11 +44,14 @@ public class NetworkImpl {
                         Gson gson = new Gson();
                         CoopProducts coopProducts = gson.fromJson(jsonObject.toString(),CoopProducts.class);
                         coopProductsList.add(coopProducts);
-                        //Log.e("Rest Respone", coopProducts.navn);
+                        Log.e("Rest Respone", coopProductsList.get(i).navn);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+
+
 
             }
         }, new Response.ErrorListener() {
@@ -63,6 +70,8 @@ public class NetworkImpl {
             }
         };
         requestQueue.add(objectRequest);
+
+        Log.e("Rest Respone", coopProductsList.size() + "");
         return coopProductsList;
     }
     public CoopStoreCore CoopStoreAPI() {
