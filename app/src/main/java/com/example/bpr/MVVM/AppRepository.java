@@ -1,9 +1,12 @@
-package com.example.bpr;
+package com.example.bpr.MVVM;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.bpr.Objects.CoopProducts;
+import com.example.bpr.Dao.CoopProductsDao;
 
 import java.util.List;
 

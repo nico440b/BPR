@@ -1,4 +1,4 @@
-package com.example.bpr;
+package com.example.bpr.Objects;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -48,6 +48,8 @@ public class CoopStore implements Serializable {
     public ArrayList<OpeningHour> openingHours;
     @SerializedName("Departments")
     public ArrayList<Department> departments;
+
+
 }
 @Entity
 class Department{
@@ -86,31 +88,3 @@ class OpeningHour{
     public String toDate;
 }
 
-@Entity
- class CoopStoreCore {
-    @PrimaryKey
-    @SerializedName("CurrentPage")
-    public int currentPage;
-    @SerializedName("PageCount")
-    public int pageCount;
-    @SerializedName("PageSize")
-    public int pageSize;
-    @SerializedName("TotalPagedItemsCount")
-    public int totalPagedItemsCount;
-    /*
-    @SerializedName("Data")
-    public ArrayList<CoopStore> data;
-
-     */
-    @SerializedName("ApiObsolete")
-    public boolean apiObsolete;
-    @SerializedName("ApiVersion")
-    public String apiVersion;
-    @SerializedName("Status")
-    public int status;
-    @SerializedName("Message")
-    public String message;
-    
-
-
-}
