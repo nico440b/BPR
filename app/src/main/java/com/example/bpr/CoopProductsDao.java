@@ -1,9 +1,12 @@
 package com.example.bpr;
 
+import static androidx.room.OnConflictStrategy.IGNORE;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.ArrayList;
@@ -15,10 +18,10 @@ public interface CoopProductsDao {
     @Query("Select * From coopproducts")
     LiveData<List<CoopProducts>> getAll();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(List<CoopProducts> coopProducts);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertOne(CoopProducts coopProducts);
 
     @Query("Delete From coopproducts")

@@ -20,6 +20,10 @@ public class AppRepository {
     public void insert(CoopProducts products) {
         new InsertCoopProductsAsyncTask(coopProductsDao).execute(products);
     }
+    public void insertAll(List<CoopProducts> products)
+    {
+        new InsertAllCoopProductsAsyncTask(coopProductsDao).execute(products);
+    }
 
     public void delete() {
         new DeleteCoopProductsAsyncTask(coopProductsDao).execute();
@@ -39,6 +43,19 @@ public class AppRepository {
         @Override
         protected Void doInBackground(CoopProducts... coopProducts) {
             coopProductsDao.insertOne(coopProducts[0]);
+            return null;
+        }
+    }
+    private static class InsertAllCoopProductsAsyncTask extends AsyncTask<List<CoopProducts>, Void, Void> {
+        private CoopProductsDao coopProductsDao;
+
+        private InsertAllCoopProductsAsyncTask(CoopProductsDao coopProductsDao) {
+            this.coopProductsDao = coopProductsDao;
+        }
+
+        @Override
+        protected Void doInBackground(List<CoopProducts>... coopProducts) {
+            coopProductsDao.insertAll(coopProducts[0]);
             return null;
         }
     }

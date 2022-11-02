@@ -55,7 +55,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            list = network.CoopProductsAPI();
+            network.CoopProductsAPI(new VolleyCallBack() {
+                @Override
+                public void onSuccess(List<CoopProducts> result) {
+                    list = result;
+                }
+            });
             coopProductsDao.insertAll(list);
             return null;
         }

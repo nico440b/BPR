@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private List<CoopProducts> coopProducts;
     private CoopProductsViewModel coopProductsViewModel;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +90,21 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
         //core = network.CoopStoreAPI();
-        coopProducts = network.CoopProductsAPI();
+
+        network.CoopProductsAPI(new VolleyCallBack() {
+            @Override
+            public void onSuccess(List<CoopProducts> result) {
+                coopProducts = result;
+                coopProductsViewModel.insertAll(coopProducts);
+                LiveData<List<CoopProducts>> test;
+                test = coopProductsViewModel.getProducts();
+                Log.e("Rest Respone", test.getValue().get(0).navn);
+
+
+            }
+        });
+
+
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         coopProductsViewModel.getProducts().observe(this, new Observer<List<CoopProducts>>() {
             @Override
@@ -100,15 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        /*
-        coopProductsViewModel.insert(coopProducts.get(0));
-        LiveData<List<CoopProducts>> test;
-        test = coopProductsViewModel.getProducts();
-
-
-         */
-
-        //Log.e("Rest Respone", coopProducts.get(0).navn);
 
 
 
@@ -116,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //Log.e("Rest Respone", test.get(0).navn);
+
+
     }
     private void signIn(String email,String password){
         mAuth.signInWithEmailAndPassword(email, password)

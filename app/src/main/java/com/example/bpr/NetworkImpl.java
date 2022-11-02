@@ -27,7 +27,7 @@ public class NetworkImpl {
 
 
 
-    public ArrayList<CoopProducts> CoopProductsAPI() {
+    public ArrayList<CoopProducts> CoopProductsAPI(final VolleyCallBack callBack) {
         String URL = "https://api.cl.coop.dk/productapi/v1/product/24181";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
         ArrayList<CoopProducts> coopProductsList = new ArrayList<CoopProducts>();
@@ -44,12 +44,13 @@ public class NetworkImpl {
                         Gson gson = new Gson();
                         CoopProducts coopProducts = gson.fromJson(jsonObject.toString(),CoopProducts.class);
                         coopProductsList.add(coopProducts);
-                        Log.e("Rest Respone", coopProductsList.get(i).navn);
+                        //Log.e("Rest Respone", coopProductsList.get(i).navn);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                callBack.onSuccess(coopProductsList);
 
 
 
