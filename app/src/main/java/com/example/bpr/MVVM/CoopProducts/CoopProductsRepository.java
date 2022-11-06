@@ -1,20 +1,21 @@
-package com.example.bpr.MVVM;
+package com.example.bpr.MVVM.CoopProducts;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.bpr.MVVM.AppDatabase;
 import com.example.bpr.Objects.CoopProducts;
 import com.example.bpr.Dao.CoopProductsDao;
 
 import java.util.List;
 
-public class AppRepository {
+public class CoopProductsRepository {
     private CoopProductsDao coopProductsDao;
     private LiveData<List<CoopProducts>> allProducts;
 
-    public AppRepository(Application application) {
+    public CoopProductsRepository(Application application) {
         AppDatabase appDatabase = AppDatabase.getInstance(application);
         coopProductsDao = appDatabase.coopProductsDao();
         allProducts = coopProductsDao.getAll();

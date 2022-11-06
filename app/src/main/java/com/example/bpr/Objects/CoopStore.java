@@ -9,9 +9,9 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 
-@Entity
+@Entity(tableName = "coopstore")
 public class CoopStore implements Serializable {
-
+    @PrimaryKey
     @SerializedName("Kardex")
     public int kardex;
     @SerializedName("RetailGroupName")

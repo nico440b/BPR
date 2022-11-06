@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.bpr.MVVM.CoopProductsViewModel;
+import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.Objects.CoopProducts;
 import com.example.bpr.Objects.CoopStoreCore;
 import com.google.android.gms.tasks.OnCompleteListener;

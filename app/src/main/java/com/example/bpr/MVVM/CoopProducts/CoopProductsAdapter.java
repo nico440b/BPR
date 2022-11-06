@@ -1,4 +1,4 @@
-package com.example.bpr.MVVM;
+package com.example.bpr.MVVM.CoopProducts;
 
 import android.view.View;
 import android.view.ViewGroup;
