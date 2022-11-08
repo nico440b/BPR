@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
+import com.example.bpr.MVVM.CoopStores.CoopStoresViewModel;
 import com.example.bpr.Objects.CoopProducts;
+import com.example.bpr.Objects.CoopStore;
 import com.example.bpr.Objects.CoopStoreCore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,11 +42,10 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     public static Context context;
     private NetworkImpl network = new NetworkImpl();
-    private CoopStoreCore core = new CoopStoreCore();
-    private Converters converters = new Converters();
 
     private List<CoopProducts> coopProducts;
     private CoopProductsViewModel coopProductsViewModel;
+    private CoopStoresViewModel coopStoresViewModel;
 
 
     @Override
@@ -77,19 +78,32 @@ public class MainActivity extends AppCompatActivity {
 
         network.getCoopProducts(new VolleyCallBack() {
             @Override
-            public void onSuccess(List<CoopProducts> result) {
+            public void onSuccessProducts(List<CoopProducts> result) {
                 coopProducts = result;
                 coopProductsViewModel.insertAll(coopProducts);
+                /*
                 LiveData<List<CoopProducts>> test;
                 test = coopProductsViewModel.getProducts();
                 Log.e("Rest Respone", test.getValue().get(0).navn);
 
 
+                 */
+
+            }
+
+        });
+        network.getCoopStores(new VolleyCallBackStores() {
+            @Override
+            public void onSuccesStores(List<CoopStore> stores) {
+                List<CoopStore> list = stores;
+                coopStoresViewModel.insertAll(list);
             }
         });
 
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
+        coopStoresViewModel = ViewModelProviders.of(this).get(CoopStoresViewModel.class);
+
         coopProductsViewModel.getProducts().observe(this, new Observer<List<CoopProducts>>() {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {

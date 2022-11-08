@@ -53,7 +53,7 @@ public class NetworkImpl {
                         e.printStackTrace();
                     }
                 }
-                callBack.onSuccess(coopProductsList);
+                callBack.onSuccessProducts(coopProductsList);
 
 
 
@@ -78,7 +78,7 @@ public class NetworkImpl {
         Log.e("Rest Respone", coopProductsList.size() + "");
         return coopProductsList;
     }
-    public CoopStoreCore getCoopStores() {
+    public CoopStoreCore getCoopStores(final VolleyCallBackStores callback) {
         //returns all stores in a vicinity of the user based on their gps coordinates and how big of a radius they have decided
         String URL = "https://api.cl.coop.dk/storeapi/v1/stores/find/radius/2000?latitude=55.857543&longitude=9.838736";
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
@@ -92,6 +92,7 @@ public class NetworkImpl {
                     Gson gson = new Gson();
                     CoopStoreCore root = gson.fromJson(response.toString(), CoopStoreCore.class);
                     main = root;
+                    callback.onSuccesStores(main.data);
 
                 } catch (Exception e) {
                     e.printStackTrace();
