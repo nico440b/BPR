@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Button loginBtn = findViewById(R.id.loginBtn);
         EditText mail = findViewById(R.id.mailField);
         EditText pw = findViewById(R.id.pwField);
+        coopStoresViewModel = ViewModelProviders.of(this).get(CoopStoresViewModel.class);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,33 +77,36 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         //core = network.CoopStoreAPI();
 
-        network.getCoopProducts(new VolleyCallBack() {
-            @Override
-            public void onSuccessProducts(List<CoopProducts> result) {
-                coopProducts = result;
-                coopProductsViewModel.insertAll(coopProducts);
-                /*
-                LiveData<List<CoopProducts>> test;
-                test = coopProductsViewModel.getProducts();
-                Log.e("Rest Respone", test.getValue().get(0).navn);
 
-
-                 */
-
-            }
-
-        });
         network.getCoopStores(new VolleyCallBackStores() {
             @Override
             public void onSuccesStores(List<CoopStore> stores) {
                 List<CoopStore> list = stores;
                 coopStoresViewModel.insertAll(list);
+                LiveData<List<CoopStore>> coopStores;
+
+                coopStores = coopStoresViewModel.getAll();
+                for (int i=0;i<list.size();i++) {
+                    network.getCoopProducts(list.get(i).retailGroupName,list.get(i).kardex,new VolleyCallBack() {
+                        @Override
+                        public void onSuccessProducts(List<CoopProducts> result) {
+                            coopProducts = result;
+                            coopProductsViewModel.insertAll(coopProducts);
+
+
+                        }
+
+                    });
+                }
+
             }
+
+
         });
 
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
-        coopStoresViewModel = ViewModelProviders.of(this).get(CoopStoresViewModel.class);
+
 
         coopProductsViewModel.getProducts().observe(this, new Observer<List<CoopProducts>>() {
             @Override

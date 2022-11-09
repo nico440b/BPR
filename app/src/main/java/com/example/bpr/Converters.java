@@ -25,11 +25,7 @@ public class Converters {
     public Gson gson = new Gson();
 
 
-    @TypeConverter
-    public static List<String> fromString(String value) {
-        Type listType = new TypeToken<List<String>>() {}.getType();
-        return new Gson().fromJson(value, listType);
-    }
+
     @TypeConverter
     public static List<Link> fromList(String list) {
         if (list == null) {

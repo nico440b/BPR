@@ -21,7 +21,7 @@ import com.example.bpr.VolleyCallBack;
 
 import java.util.List;
 
-@Database(entities = {CoopStore.class,CoopProducts.class},version = 3,exportSchema = false
+@Database(entities = {CoopStore.class,CoopProducts.class},version = 4,exportSchema = false
 )
 
 @TypeConverters({Converters.class})
@@ -63,7 +63,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            network.getCoopProducts(new VolleyCallBack() {
+            network.getCoopProducts("test",0,new VolleyCallBack() {
                 @Override
                 public void onSuccessProducts(List<CoopProducts> result) {
                     list = result;

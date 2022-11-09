@@ -19,6 +19,8 @@ public class CoopProducts {
         public double pris;
         @SerializedName("VareHierakiId")
         public int vareHierakiId;
+        public String store;
+        public int kardex;
 
 
 
