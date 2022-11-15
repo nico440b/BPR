@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 coopProductsViewModel.insertAll(coopProducts);
                 LiveData<List<CoopProducts>> test;
                 test = coopProductsViewModel.getProducts();
-                Log.e("Rest Respone", test.getValue().get(0).navn);
+//                Log.e("Rest Respone", test.getValue().get(0).navn);
 
 
             }
