@@ -80,16 +80,16 @@ public class NetworkImpl {
         Log.e("Rest Respone", coopProductsList.size() + "");
         return coopProductsList;
     }
-    public CoopStoreCore getCoopStores(final VolleyCallBackStores callback) {
+    public CoopStoreCore getCoopStores(double latitude,double longtitude, final VolleyCallBackStores callback) {
         //returns all stores in a vicinity of the user based on their gps coordinates and how big of a radius they have decided
-        String URL = "https://api.cl.coop.dk/storeapi/v1/stores/find/radius/2000?latitude=55.857543&longitude=9.838736";
+        String URL = "https://api.cl.coop.dk/storeapi/v1/stores/find/radius/2000?latitude="+latitude+"&longitude="+longtitude;
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
 
        CoopStoreCore core = new CoopStoreCore();
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                //Log.e("Rest Respone", response.toString());
+                Log.e("Rest Respone", response.toString());
                 try {
                     Gson gson = new Gson();
                     CoopStoreCore root = gson.fromJson(response.toString(), CoopStoreCore.class);

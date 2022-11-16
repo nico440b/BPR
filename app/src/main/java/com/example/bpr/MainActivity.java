@@ -93,22 +93,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                locationTrack = new LocationTrack(MainActivity.this);
 
 
-                if (locationTrack.canGetLocation()) {
-
-
-                    double longitude = locationTrack.getLongitude();
-                    double latitude = locationTrack.getLatitude();
-                    Log.e("Rest Respone", longitude + " " + latitude);
-                    Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-                } else {
-
-                    locationTrack.showSettingsAlert();
-                }
-
-                /*
                 email = mail.getText().toString();
                 password = pw.getText().toString();
                 if (email.equals("")||password.equals("")){
@@ -118,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     signIn(email,password);
                 }
 
-                 */
+
 
             }
         });
@@ -126,32 +112,46 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         //core = network.CoopStoreAPI();
 
-
-        network.getCoopStores(new VolleyCallBackStores() {
-            @Override
-            public void onSuccesStores(List<CoopStore> stores) {
-                List<CoopStore> list = stores;
-                coopStoresViewModel.insertAll(list);
-                LiveData<List<CoopStore>> coopStores;
-
-                coopStores = coopStoresViewModel.getAll();
-                for (int i=0;i<list.size();i++) {
-                    network.getCoopProducts(list.get(i).retailGroupName,list.get(i).kardex,new VolleyCallBack() {
-                        @Override
-                        public void onSuccessProducts(List<CoopProducts> result) {
-                            coopProducts = result;
-                            coopProductsViewModel.insertAll(coopProducts);
+        locationTrack = new LocationTrack(MainActivity.this);
 
 
-                        }
+        if (locationTrack.canGetLocation()) {
 
-                    });
+
+            double longitude = locationTrack.getLongitude();
+            double latitude = locationTrack.getLatitude();
+            Log.e("Rest Respone", longitude + " " + latitude);
+            network.getCoopStores(latitude,longitude,new VolleyCallBackStores() {
+                @Override
+                public void onSuccesStores(List<CoopStore> stores) {
+                    List<CoopStore> list = stores;
+                    coopStoresViewModel.insertAll(list);
+                    LiveData<List<CoopStore>> coopStores;
+
+                    coopStores = coopStoresViewModel.getAll();
+                    for (int i=0;i<list.size();i++) {
+                        network.getCoopProducts(list.get(i).retailGroupName,list.get(i).kardex,new VolleyCallBack() {
+                            @Override
+                            public void onSuccessProducts(List<CoopProducts> result) {
+                                coopProducts = result;
+                                coopProductsViewModel.insertAll(coopProducts);
+
+
+                            }
+
+                        });
+                    }
+
                 }
 
+
+            });
+
+             } else {
+
+            locationTrack.showSettingsAlert();
             }
 
-
-        });
 
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
