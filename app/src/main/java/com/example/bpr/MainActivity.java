@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
                     coopStores = coopStoresViewModel.getAll();
                     for (int i=0;i<list.size();i++) {
-                        network.getCoopProducts(list.get(i).retailGroupName,list.get(i).kardex,new VolleyCallBack() {
+                        network.getCoopProducts(list.get(i).name,list.get(i).kardex,new VolleyCallBack() {
                             @Override
                             public void onSuccessProducts(List<CoopProducts> result) {
                                 coopProducts = result;
