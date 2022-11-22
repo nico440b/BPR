@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bpr.Adapters.RecyclerViewAdapter;
-import com.example.bpr.MVVM.CoopProductsViewModel;
+import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.MainActivity;
 import com.example.bpr.MyAdapter;
 import com.example.bpr.NetworkImpl;

@@ -1,5 +1,8 @@
 package com.example.bpr.Objects;
 
+import android.location.Location;
+import android.location.LocationManager;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -21,6 +24,17 @@ public class CoopProducts {
         public int vareHierakiId;
         public String store;
         public int kardex;
+        public double longitude;
+        public double latitude;
+
+
+        public Location getLocation()
+        {
+                Location location = new Location("provider");
+                location.setLatitude(latitude);
+                location.setLongitude(longitude);
+                return new Location(location);
+        }
 
 
 

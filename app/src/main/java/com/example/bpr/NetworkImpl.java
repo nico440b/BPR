@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.bpr.Objects.CoopProducts;
 import com.example.bpr.Objects.CoopStoreCore;
+import com.example.bpr.Objects.Location;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -29,7 +30,7 @@ public class NetworkImpl {
 
 
 
-    public ArrayList<CoopProducts> getCoopProducts(String store, int kardex,final VolleyCallBack callBack) {
+    public ArrayList<CoopProducts> getCoopProducts(String store, int kardex, Location location,final VolleyCallBack callBack) {
         //gets all products for a specific store
         String URL = "https://api.cl.coop.dk/productapi/v1/product/"+kardex;
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
@@ -48,6 +49,8 @@ public class NetworkImpl {
                         CoopProducts coopProducts = gson.fromJson(jsonObject.toString(),CoopProducts.class);
                         coopProducts.store=store;
                         coopProducts.kardex=kardex;
+                        coopProducts.latitude = location.coordinates.get(0);
+                        coopProducts.longitude = location.coordinates.get(1);
                         coopProductsList.add(coopProducts);
                         //Log.e("Rest Respone", coopProductsList.get(i).navn);
 

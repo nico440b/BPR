@@ -8,6 +8,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList permissionsToRequest;
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
+
+
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LocationTrack locationTrack;
@@ -120,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
             double longitude = locationTrack.getLongitude();
             double latitude = locationTrack.getLatitude();
+
             Log.e("Rest Respone", longitude + " " + latitude);
             network.getCoopStores(latitude,longitude,new VolleyCallBackStores() {
                 @Override
@@ -130,11 +135,14 @@ public class MainActivity extends AppCompatActivity {
 
                     coopStores = coopStoresViewModel.getAll();
                     for (int i=0;i<list.size();i++) {
-                        network.getCoopProducts(list.get(i).name,list.get(i).kardex,new VolleyCallBack() {
+                        network.getCoopProducts(list.get(i).name,list.get(i).kardex,list.get(i).location,new VolleyCallBack() {
                             @Override
                             public void onSuccessProducts(List<CoopProducts> result) {
+
                                 coopProducts = result;
+                                Log.e("Length to product", String.valueOf(locationTrack.loc.distanceTo(coopProducts.get(1).getLocation())/1000000));
                                 coopProductsViewModel.insertAll(coopProducts);
+
 
 
                             }
