@@ -36,13 +36,21 @@ public class CoopProducts {
                 return new Location(location);
         }
 
-        public String calculateDistance(Location location)
+        public String calculateDistanceString(Location location)
         {
                 Location location1 = new Location("provider");
                 location1.setLatitude(latitude);
                 location1.setLongitude(longitude);
                 Float distance = location.distanceTo(location1);
-                return distance +" KM";
+                return distance/1000000 +" KM";
+        }
+        public double calculateDistanceDouble(Location location)
+        {
+                Location location1 = new Location("provider");
+                location1.setLatitude(latitude);
+                location1.setLongitude(longitude);
+                Float distance = location.distanceTo(location1);
+                return (double) distance/1000000;
         }
 
 

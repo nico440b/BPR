@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
-    LocationTrack locationTrack;
+    public LocationTrack locationTrack;
 
 
     @Override
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccessProducts(List<CoopProducts> result) {
 
                                 coopProducts = result;
-                                Log.e("Length to product", String.valueOf(locationTrack.loc.distanceTo(coopProducts.get(1).getLocation())/1000000) + " KM");
+                                //Log.e("Length to product", String.valueOf(locationTrack.loc.distanceTo(coopProducts.get(1).getLocation())/1000000) + " KM");
                                 coopProductsViewModel.insertAll(coopProducts);
 
 
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<CoopProducts> coopProducts) {
                 Toast.makeText(MainActivity.this, "Changed", Toast.LENGTH_SHORT).show();
                 liveDataProducts = coopProductsViewModel.getProducts();
-                Log.e("Rest Respone", liveDataProducts.getValue().get(0).navn);
+                //Log.e("Rest Respone", liveDataProducts.getValue().get(0).navn);
             }
         });
 
