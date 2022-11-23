@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private NetworkImpl network = new NetworkImpl();
 
     private List<CoopProducts> coopProducts;
+    private LiveData<List<CoopProducts>> liveDataProducts;
     private CoopProductsViewModel coopProductsViewModel;
     private CoopStoresViewModel coopStoresViewModel;
 
@@ -140,8 +141,9 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccessProducts(List<CoopProducts> result) {
 
                                 coopProducts = result;
-                                Log.e("Length to product", String.valueOf(locationTrack.loc.distanceTo(coopProducts.get(1).getLocation())/1000000));
+                                Log.e("Length to product", String.valueOf(locationTrack.loc.distanceTo(coopProducts.get(1).getLocation())/1000000) + " KM");
                                 coopProductsViewModel.insertAll(coopProducts);
+
 
 
 
@@ -169,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {
                 Toast.makeText(MainActivity.this, "Changed", Toast.LENGTH_SHORT).show();
+                liveDataProducts = coopProductsViewModel.getProducts();
+                Log.e("Rest Respone", liveDataProducts.getValue().get(0).navn);
             }
         });
 
