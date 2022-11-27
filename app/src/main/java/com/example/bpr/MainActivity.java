@@ -4,9 +4,14 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -44,6 +49,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,10 +70,17 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
 
+    //Alarm
+    PendingIntent pendingIntent;
+    AlarmManager alarmManager;
+    BroadcastReceiver broadcastReceiver;
+    Calendar calendar;
 
-
+    //Location
     private final static int ALL_PERMISSIONS_RESULT = 101;
     public LocationTrack locationTrack;
+    double latitude = 0;
+    double longitude = 0;
 
 
     @Override
@@ -106,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"Fill In All The Fields",Toast.LENGTH_LONG).show();
                 }
                 else {
+                    Log.e("Rest Respone", "test login");
                     signIn(email,password);
                 }
 
@@ -113,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         context = getApplicationContext();
         //core = network.CoopStoreAPI();
@@ -123,39 +139,11 @@ public class MainActivity extends AppCompatActivity {
         if (locationTrack.canGetLocation()) {
 
 
-            double longitude = locationTrack.getLongitude();
-            double latitude = locationTrack.getLatitude();
+            longitude = locationTrack.getLongitude();
+            latitude = locationTrack.getLatitude();
 
             Log.e("Rest Respone", longitude + " " + latitude);
-            network.getCoopStores(latitude,longitude,new VolleyCallBackStores() {
-                @Override
-                public void onSuccesStores(List<CoopStore> stores) {
-                    List<CoopStore> list = stores;
-                    coopStoresViewModel.insertAll(list);
-                    LiveData<List<CoopStore>> coopStores;
-
-                    coopStores = coopStoresViewModel.getAll();
-                    for (int i=0;i<list.size();i++) {
-                        network.getCoopProducts(list.get(i).name,list.get(i).kardex,list.get(i).location,new VolleyCallBack() {
-                            @Override
-                            public void onSuccessProducts(List<CoopProducts> result) {
-
-                                coopProducts = result;
-                                //Log.e("Length to product", String.valueOf(locationTrack.loc.distanceTo(coopProducts.get(1).getLocation())/1000000) + " KM");
-                                coopProductsViewModel.insertAll(coopProducts);
-
-
-
-
-                            }
-
-                        });
-                    }
-
-                }
-
-
-            });
+            addCoopProducts(latitude,longitude);
 
              } else {
 
@@ -178,30 +166,49 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        //Alarm
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR,8);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        long intendedTime = calendar.getTimeInMillis();
 
+        registerMyAlarmBroadcast();
+        alarmManager.set(AlarmManager.RTC_WAKEUP,intendedTime,pendingIntent);
 
 
     }
 
 
 
-    private void signIn(String email,String password){
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
+    private void signIn(String email,String password)
+    {
+        try {
 
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.e("Rest Respone", "Hallo tesyt");
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Log.e("login exception", task.getException().getMessage());
+                                updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Toast.makeText(MainActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                Log.e("login exception", task.getException().getMessage());
+                            }
                         }
-                    }
-                });
+                    }).getException();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     private void updateUI(FirebaseUser user){
         setContentView(R.layout.activity_main);
@@ -238,7 +245,38 @@ public class MainActivity extends AppCompatActivity {
     private boolean canMakeSmores() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
+    public void addCoopProducts(double latitude,double longitude)
+    {
+        network.getCoopStores(latitude,longitude,new VolleyCallBackStores() {
+            @Override
+            public void onSuccesStores(List<CoopStore> stores) {
+                List<CoopStore> list = stores;
+                coopStoresViewModel.insertAll(list);
+                LiveData<List<CoopStore>> coopStores;
 
+                coopStores = coopStoresViewModel.getAll();
+                for (int i=0;i<list.size();i++) {
+                    network.getCoopProducts(list.get(i).name,list.get(i).kardex,list.get(i).location,new VolleyCallBack() {
+                        @Override
+                        public void onSuccessProducts(List<CoopProducts> result) {
+
+                            coopProducts = result;
+                            //Log.e("Length to product", String.valueOf(locationTrack.loc.distanceTo(coopProducts.get(1).getLocation())/1000000) + " KM");
+                            coopProductsViewModel.insertAll(coopProducts);
+
+
+
+
+                        }
+
+                    });
+                }
+
+            }
+
+
+        });
+    }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -292,5 +330,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         locationTrack.stopListener();
+        unregisterReceiver(broadcastReceiver);
     }
+
+    private void registerMyAlarmBroadcast()
+    {
+        Log.i("MainActivity", "Going to register Intent.RegisterAlramBroadcast");
+
+        //This is the call back function(BroadcastReceiver) which will be call when your
+        //alarm time will reached.
+        broadcastReceiver = new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                addCoopProducts(latitude,longitude);
+            }
+        };
+
+        registerReceiver(broadcastReceiver, new IntentFilter("com.alarm.example") );
+        pendingIntent = PendingIntent.getBroadcast( this, 0, new Intent("com.alarm.example"),0 );
+        alarmManager = (AlarmManager)(this.getSystemService( Context.ALARM_SERVICE ));
+    }
+    private void UnregisterAlarmBroadcast()
+    {
+        alarmManager.cancel(pendingIntent);
+        getBaseContext().unregisterReceiver(broadcastReceiver);
+    }
+
+
+
 }
