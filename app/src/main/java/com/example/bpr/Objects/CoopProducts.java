@@ -21,6 +21,11 @@ public class CoopProducts {
         public int vareHierakiId;
         public String store;
         public int kardex;
+        public double amount=1;
+
+        public double getShoppingCartProductPrice(){
+                return amount*pris;
+        }
 
 
 

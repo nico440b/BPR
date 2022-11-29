@@ -26,4 +26,7 @@ public class ShoppingCart {
     public void setCoopProducts(LiveData<List<CoopProducts>> coopProducts) {
         this.coopProducts = coopProducts;
     }
+    public void addCoopProduct(CoopProducts product){
+        coopProducts.getValue().add(product);
+    }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopProducts;
+import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -24,9 +26,14 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<CoopProducts> _data;
     private boolean isPlay = false;
+    Context mContext;
+    private ShoppingCart shoppingCart;
+    private OnProductListener mOnProductListener;
 
-    public RecyclerViewAdapter(List<CoopProducts> data){
+    public RecyclerViewAdapter(Context context, List<CoopProducts> data, OnProductListener onProductListener){
         this._data = data;
+        this.mOnProductListener = onProductListener;
+        this.mContext = context;
     }
 
     @NonNull
@@ -45,7 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // functionality
+
                 Toast.makeText(view.getContext(), "Product added to shopping cart", Toast.LENGTH_SHORT).show();
             }
         });
@@ -64,11 +71,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         });
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, this, mOnProductListener);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
+        CoopProducts current = _data.get(position);
         holder.name.setText(_data.get(position).navn.substring(0, 1).toUpperCase() + _data.get(position).navn.substring(1).toLowerCase());
         holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
         holder.price.setText(Double.toString(_data.get(position).pris) + " kr");
@@ -79,22 +87,33 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return _data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        RecyclerViewAdapter adapter;
         TextView name;
         TextView price;
         TextView name2;
+        Button btn;
+        OnProductListener listener;
 
-        ViewHolder(View itemView){
+        ViewHolder(View itemView, RecyclerViewAdapter adapter, OnProductListener listener){
             super(itemView);
+            this.adapter = adapter;
+            this.listener = listener;
             name = itemView.findViewById(R.id.productNameText);
             name2 = itemView.findViewById(R.id.productName2Text);
             price = itemView.findViewById(R.id.price);
+            btn = itemView.findViewById(R.id.addToCartButton);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v){
+            listener.onProductClick(getAdapterPosition());
         }
     }
 
-    public CoopProducts getProduct(int id){
-        return _data.get(id);
+    public interface OnProductListener{
+        void onProductClick(int position);
     }
-
 
 }

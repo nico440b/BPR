@@ -27,11 +27,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bpr.Adapters.RecyclerViewAdapter;
-import com.example.bpr.MVVM.CoopProductsViewModel;
+import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.MainActivity;
 import com.example.bpr.MyAdapter;
 import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopProducts;
+import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
 import com.example.bpr.SpinnerStateV0;
 import com.example.bpr.VolleyCallBack;
@@ -43,12 +44,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnProductListener {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private NetworkImpl networkImpl = new NetworkImpl();
     private List<CoopProducts> products = new ArrayList<>();
     private CoopProductsViewModel coopProductsViewModel;
+    ShoppingCart shoppingCart = new ShoppingCart();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -278,7 +280,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void updateView(List<CoopProducts> updatedProducts){
-        adapter = new RecyclerViewAdapter(updatedProducts);
+        adapter = new RecyclerViewAdapter(getContext(), updatedProducts, this::onProductClick);
         recyclerView.setAdapter(adapter);
     }
 
@@ -315,16 +317,11 @@ public class SearchFragment extends Fragment {
         return products;
     }
 
+    @Override
+    public void onProductClick(int position) {
+        shoppingCart.addCoopProduct(products.get(position));
+        Log.e("added product:", products.get(position).navn);
+    }
 
-
-    //-----------MAYBE USE SHARED PREFERENCES FOR STORING FAVORITES------------//
-//    public void addToFav(String name, String brand, int amount){
-//        SharedPreferences sharedPreferences = getContext().getSharedPreferences("SharedPref", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString("name", name);
-//        editor.putString("brand", name);
-//        editor.putInt("amount", amount);
-//        editor.commit();
-//    }
 
 }
