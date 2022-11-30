@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bpr.Adapters.RecyclerViewAdapter;
+import com.example.bpr.LocationTrack;
 import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.MainActivity;
 import com.example.bpr.MyAdapter;
@@ -44,18 +46,23 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnProductListener {
+public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnButtonListener {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private NetworkImpl networkImpl = new NetworkImpl();
     private List<CoopProducts> products = new ArrayList<>();
     private CoopProductsViewModel coopProductsViewModel;
     ShoppingCart shoppingCart = new ShoppingCart();
+    List<CoopProducts> coopProductsList;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+        MainActivity mainActivity = (MainActivity) getActivity();
+
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
+        shoppingCart.coopProducts = coopProductsViewModel.getProducts();
         coopProductsViewModel.getProducts().observe(getViewLifecycleOwner(), new Observer<List<CoopProducts>>() {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {
@@ -65,6 +72,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnPr
                 updateView(products);
             }
         });
+
+
 
         recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -174,6 +183,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnPr
                             // clear text view value
                             textViewOptions.setText("");
                         }
+                        updateView(products);
                     }
                 });
                 builder.show();
@@ -244,7 +254,11 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnPr
                                 break;
                             default: Log.e("msg", "default");
                         }
+
+                        updateView(results);
                     }
+
+
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
                     @Override
@@ -280,7 +294,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnPr
     }
 
     public void updateView(List<CoopProducts> updatedProducts){
-        adapter = new RecyclerViewAdapter(getContext(), updatedProducts, this::onProductClick);
+        adapter = new RecyclerViewAdapter(getContext(), updatedProducts, this::onButtonClick);
         recyclerView.setAdapter(adapter);
     }
 
@@ -311,6 +325,14 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnPr
         updateView(result);
     }
 
+    public List<CoopProducts> get1km(){
+        List<CoopProducts> result = new ArrayList<>();
+        for (int i=0; i<products.size(); i++){
+
+        }
+        return result;
+    }
+
     public List<CoopProducts> getClosest(){
         for(int i=0; i<products.size(); i++){
         Log.i("msg", Integer.toString(products.get(i).vareHierakiId));}
@@ -318,8 +340,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnPr
     }
 
     @Override
-    public void onProductClick(int position) {
-        shoppingCart.addCoopProduct(products.get(position));
+    public void onButtonClick(int position) {
+        shoppingCart.coopProducts.getValue().add(products.get(position));
         Log.e("added product:", products.get(position).navn);
     }
 

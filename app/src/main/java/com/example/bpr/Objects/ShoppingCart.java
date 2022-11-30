@@ -2,6 +2,7 @@ package com.example.bpr.Objects;
 
 import androidx.lifecycle.LiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
@@ -25,8 +26,5 @@ public class ShoppingCart {
     }
     public void setCoopProducts(LiveData<List<CoopProducts>> coopProducts) {
         this.coopProducts = coopProducts;
-    }
-    public void addCoopProduct(CoopProducts product){
-        coopProducts.getValue().add(product);
     }
 }
