@@ -1,11 +1,18 @@
 package com.example.bpr.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,16 +28,18 @@ import com.example.bpr.R;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.ViewHolder> {
     private List<CoopProducts> _data;
     private boolean isPlay = false;
-    Context mContext;
+    private RecyclerViewAdapter.OnButtonListener mOnButtonListener;
     private ShoppingCart shoppingCart;
-    private OnButtonListener mOnButtonListener;
+    Context mContext;
 
-    public RecyclerViewAdapter(Context context, List<CoopProducts> data, OnButtonListener onButtonListener){
+    public RecyclerViewListAdapter(Context context, List<CoopProducts> data, RecyclerViewAdapter.OnButtonListener onButtonListener) {
         this._data = data;
         this.mContext = context;
         this.mOnButtonListener = onButtonListener;
@@ -40,49 +49,61 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.recyclerview_row, parent, false);
+        View view = layoutInflater.inflate(R.layout.shopping_cart_recyclerview, parent, false);
 
-        return new ViewHolder(view, this);
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinnerAmount);
+        List<String> values = new ArrayList<String>();
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, view.getResources().getStringArray(R.array.values));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
-        CoopProducts current = _data.get(position);
         holder.name.setText(_data.get(position).navn.substring(0, 1).toUpperCase() + _data.get(position).navn.substring(1).toLowerCase());
         holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
         holder.price.setText(Double.toString(_data.get(position).pris) + " kr");
-        holder.btn.setOnClickListener(new View.OnClickListener(){
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View view) {
                 mOnButtonListener.onButtonClick(holder.getAdapterPosition());
             }
         });
+
     }
+
 
     @Override
     public int getItemCount() {
-        return _data.size();
+        if(_data != null){
+            return _data.size();
+        }
+        else
+            return 0;
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        RecyclerViewAdapter adapter;
         TextView name;
         TextView price;
         TextView name2;
-        Button btn;
+        Button deleteBtn;
 
-        ViewHolder(View itemView, RecyclerViewAdapter adapter){
+        ViewHolder(View itemView){
             super(itemView);
-            this.adapter = adapter;
             name = itemView.findViewById(R.id.productNameText);
             name2 = itemView.findViewById(R.id.productName2Text);
             price = itemView.findViewById(R.id.price);
-            btn = itemView.findViewById(R.id.addToCartButton);
+            deleteBtn = itemView.findViewById(R.id.deleteButton);
         }
+
     }
 
     public interface OnButtonListener{
         void onButtonClick(int position);
     }
+
 
 }

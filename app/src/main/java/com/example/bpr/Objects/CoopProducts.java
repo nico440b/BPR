@@ -26,6 +26,7 @@ public class CoopProducts {
         public int kardex;
         public double longitude;
         public double latitude;
+        public double amount=1;
 
 
         public Location getLocation()
@@ -51,6 +52,11 @@ public class CoopProducts {
                 location1.setLongitude(longitude);
                 Float distance = location.distanceTo(location1);
                 return (double) distance/1000000;
+        }
+
+
+        public double getShoppingCartProductPrice(){
+                return amount*pris;
         }
 
 
