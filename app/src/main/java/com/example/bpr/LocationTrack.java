@@ -29,7 +29,7 @@ public class LocationTrack extends Service implements LocationListener {
 
     boolean canGetLocation = false;
 
-    Location loc;
+    public Location loc;
     double latitude;
     double longitude;
 
@@ -45,7 +45,7 @@ public class LocationTrack extends Service implements LocationListener {
         getLocation();
     }
 
-    private Location getLocation() {
+    public Location getLocation() {
 
         try {
             locationManager = (LocationManager) mContext

@@ -53,8 +53,6 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     private List<CoopProducts> products = new ArrayList<>();
     private CoopProductsViewModel coopProductsViewModel;
     ShoppingCart shoppingCart = new ShoppingCart();
-    List<CoopProducts> coopProductsList;
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -81,7 +79,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         TextView textViewOptions;
         boolean[] selectedOptions;
         ArrayList<Integer> langList = new ArrayList<>();
-        String[] langArray = {"Closest", "Cheapest", "Øko"};
+        String[] langArray = {"Cheapest", "Øko"};
         List<CoopProducts> results = new ArrayList<>();
 
         textViewOptions = view.findViewById(R.id.textViewOptions);
@@ -122,43 +120,22 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                         textViewOptions.setText(stringBuilder.toString());
 
                         switch (Arrays.toString(selectedOptions)){
-                            case "[false, false, true]":
+                            case "[false, false]":
+                                updateView(products);
+                                break;
+                            case "[false, true]":
                                 Log.e("msg", "in oko");
                                 getOko(products);
                                 break;
-                            case "[false, true, false]":
+                            case "[true, false]":
                                 Log.e("msg", "in cheapest");
                                 getCheapest(products);
                                 break;
-                            case "[true, false, false]":
-                                Log.e("msg", "in closest");
-                                getClosest();
-                                break;
-                            case "[true, true, false]":
-                                getCheapest(products);
-                                getClosest();
-                                Log.e("msg", "in cheapest");
-                                Log.e("msg", "in closest");
-                                break;
-                            case "[true, false, true]":
-                                getClosest();
-                                getOko(products);
-                                Log.e("msg", "in closest");
-                                Log.e("msg", "in oko");
-                                break;
-                            case "[false, true, true]":
+                            case "[true, true]":
                                 getCheapest(products);
                                 getOko(products);
                                 Log.e("msg", "in cheapest");
-                                Log.e("msg", "in oko");
-                                break;
-                            case "[true, true, true]":
-                                getCheapest(products);
-                                getOko(products);
-                                getClosest();
                                 Log.e("msg", "in closest");
-                                Log.e("msg", "in cheapest");
-                                Log.e("msg", "in oko");
                                 break;
                             default: Log.e("msg", "default");
                         }
@@ -190,32 +167,250 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
             }
         });
 
+        //--------STORES
+
+        List<CoopProducts> filteredProducts = new ArrayList<>();
+
+        TextView textViewStores;
+        boolean[] selectedStores;
+        ArrayList<Integer> langListStores = new ArrayList<>();
+        String[] langArrayStores = {"Super Brugsen", "Kvickly", "Dagli' Brugsen", "Irma", "Coop365", "Fakta"};
+
+        textViewStores = view.findViewById(R.id.textViewStores);
+        selectedStores = new boolean[langArrayStores.length];
+        textViewStores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Stores");
+                builder.setCancelable(false);
+                builder.setMultiChoiceItems(langArrayStores, selectedStores, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                        if(b){
+                            langListStores.add(i);
+                            Collections.sort(langListStores);
+                        }
+                        else{
+                            langListStores.remove(Integer.valueOf(i));
+                        }
+                    }
+                });
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i){
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int j = 0; j < langListStores.size(); j++) {
+                            // concat array value
+                            stringBuilder.append(langArrayStores[langListStores.get(j)]);
+                            // check condition
+                            if (j != langListStores.size() - 1) {
+                                // When j value  not equal
+                                // to lang list size - 1
+                                // add comma
+                                stringBuilder.append(", ");
+                            }
+                        }
+                        textViewStores.setText(stringBuilder.toString());
+
+                        switch (Arrays.toString(selectedStores)){
+                            case "[true, false, false, false, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Super Brugsen"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, true, false, false, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, true, false, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, false, true, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, false, false, true, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                updateView(filteredProducts);
+                                Log.e("size:", Integer.toString(filteredProducts.size()));
+                                break;
+                            case "[false, false, false, false, false, true]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Fakta"));
+                                updateView(filteredProducts);
+                                Log.e("size:", Integer.toString(filteredProducts.size()));
+                                break;
+                            case "[true, true, false, false, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Super Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, true, true, false, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, true, true, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, false, true, true, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, false, false, true, true]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                filteredProducts.addAll(getStore(products, "Fakta"));
+                                updateView(filteredProducts);
+                                Log.e("size:", Integer.toString(filteredProducts.size()));
+                                break;
+                            case "[true, true, true, false, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Super Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, true, true, true, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, true, true, true, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, false, true, true, true]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                filteredProducts.addAll(getStore(products, "Fakta"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[true, true, true, true, false, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Super Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, true, true, true, true, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, false, true, true, true, true]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                filteredProducts.addAll(getStore(products, "Fakta"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[true, true, true, true, true, false]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Super Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[false, true, true, true, true, true]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                filteredProducts.addAll(getStore(products, "Fakta"));
+                                updateView(filteredProducts);
+                                break;
+                            case "[true, true, true, true, true, true]":
+                                filteredProducts.clear();
+                                filteredProducts.addAll(getStore(products, "Super Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Kvickly"));
+                                filteredProducts.addAll(getStore(products, "Dagli' Brugsen"));
+                                filteredProducts.addAll(getStore(products, "Irma"));
+                                filteredProducts.addAll(getStore(products, "Coop 365"));
+                                filteredProducts.addAll(getStore(products, "Fakta"));
+                                updateView(filteredProducts);
+                                break;
+
+                            default: Log.e("msg", "default");
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // dismiss dialog
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.setNeutralButton("Clear all", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // use for loop
+                        for (int j = 0; j < selectedStores.length; j++) {
+                            // remove all selection
+                            selectedStores[j] = false;
+                            // clear language list
+                            langListStores.clear();
+                            // clear text view value
+                            textViewStores.setText("");
+                        }
+                        updateView(products);
+                    }
+                });
+                builder.show();
+            }
+        });
+
         /////////////////// DISTANCE
 
-        TextView textViewDistance;
-        boolean[] selectedDistance;
+        final TextView[] textViewDistance = new TextView[1];
+        final boolean[] selectedDistance;
+        final int[] choice = new int[1];
         ArrayList<Integer> langListDistance = new ArrayList<>();
         String[] langArrayDistance = {"1 km", "2 km", "5 km", "7 km", "10 km"};
 
-        textViewDistance = view.findViewById(R.id.textViewDistance);
-        selectedDistance = new boolean[langArrayDistance.length];
-        textViewDistance.setOnClickListener(new View.OnClickListener() {
+
+        textViewDistance[0] = view.findViewById(R.id.textViewDistance);
+        textViewDistance[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Distance");
                 builder.setCancelable(false);
 
-                builder.setMultiChoiceItems(langArrayDistance, selectedDistance, new DialogInterface.OnMultiChoiceClickListener() {
+                builder.setSingleChoiceItems(langArrayDistance, -1, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        if(b){
+                    public void onClick(DialogInterface dialogInterface, int i) {
                             langListDistance.add(i);
-                            Collections.sort(langListDistance);
-                        }
-                        else{
-                            langListDistance.remove(Integer.valueOf(i));
-                        }
+                            choice[0] = i;
+                            Log.e("choice", Integer.toString(choice[0]));
                     }
                 });
 
@@ -223,39 +418,32 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i){
                         StringBuilder stringBuilder = new StringBuilder();
-                        for (int j = 0; j < langListDistance.size(); j++) {
-                            // concat array value
-                            stringBuilder.append(langArrayDistance[langListDistance.get(j)]);
-                            // check condition
-                            if (j != langListDistance.size() - 1) {
-                                // When j value  not equal
-                                // to lang list size - 1
-                                // add comma
-                                stringBuilder.append(", ");
-                            }
-                        }
-                        textViewDistance.setText(stringBuilder.toString());
 
-                        switch (Arrays.toString(selectedDistance)){
-                            case "[true, false, false, false, false]":
+                        textViewDistance[0].setText(stringBuilder.toString());
+
+                        switch (choice[0]){
+                            case 0:
                                 Log.e("msg", "1");
+                                getKm(mainActivity.locationTrack, products, 1);
                                 break;
-                            case "[false, true, false, false, false]":
+                            case 1:
                                 Log.e("msg", "2");
+                                getKm(mainActivity.locationTrack, products, 2);
                                 break;
-                            case "[false, false, true, false, false]":
+                            case 2:
                                 Log.e("msg", "5");
+                                getKm(mainActivity.locationTrack, products, 5);
                                 break;
-                            case "[false, false, false, true, false]":
+                            case 3:
                                 Log.e("msg", "7");
+                                getKm(mainActivity.locationTrack, products, 7);
                                 break;
-                            case "[false, false, false, false, true]":
+                            case 4:
                                 Log.e("msg", "10");
+                                getKm(mainActivity.locationTrack, products, 10);
                                 break;
                             default: Log.e("msg", "default");
                         }
-
-                        updateView(results);
                     }
 
 
@@ -271,14 +459,11 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // use for loop
-                        for (int j = 0; j < selectedDistance.length; j++) {
-                            // remove all selection
-                            selectedDistance[j] = false;
                             // clear language list
                             langListDistance.clear();
                             // clear text view value
-                            textViewDistance.setText("");
-                        }
+                            textViewDistance[0].setText("");
+
                         updateView(products);
                     }
                 });
@@ -298,16 +483,6 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         recyclerView.setAdapter(adapter);
     }
 
-    public void getOko(List<CoopProducts> allProducts){
-        List<CoopProducts> result = new ArrayList<>();
-        String filter = "øko";
-        for (int i=0; i<allProducts.size(); i++){
-            if(allProducts.get(i).navn.toLowerCase().contains(filter.toLowerCase()) || allProducts.get(i).navn2.toLowerCase().contains(filter.toLowerCase())){
-                result.add(allProducts.get(i));
-            }
-        }
-        updateView(result);
-    }
 
     public void getCheapest(List<CoopProducts> allProducts){
         List<CoopProducts> result = new ArrayList<>();
@@ -325,18 +500,41 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         updateView(result);
     }
 
-    public List<CoopProducts> get1km(){
+    public void getOko(List<CoopProducts> allProducts){
         List<CoopProducts> result = new ArrayList<>();
-        for (int i=0; i<products.size(); i++){
-
+        String filter = "øko";
+        for (int i=0; i<allProducts.size(); i++){
+            if(allProducts.get(i).navn.toLowerCase().contains(filter.toLowerCase()) || allProducts.get(i).navn2.toLowerCase().contains(filter.toLowerCase())){
+                result.add(allProducts.get(i));
+            }
         }
-        return result;
+        updateView(result);
     }
 
-    public List<CoopProducts> getClosest(){
-        for(int i=0; i<products.size(); i++){
-        Log.i("msg", Integer.toString(products.get(i).vareHierakiId));}
-        return products;
+    public void getKm(LocationTrack locationTrack, List<CoopProducts> allProducts, int km){
+        List<CoopProducts> result = new ArrayList<>();
+        for (int i=0; i<allProducts.size(); i++){
+            if(allProducts.get(i).calculateDistanceDouble(locationTrack.loc) <= km){
+                result.add(allProducts.get(i));
+            }
+        }
+        Log.e("km", Integer.toString(km));
+        if(result!=null){
+        updateView(result);}
+        else{
+            Log.e("empty", "EMPTY");
+        }
+    }
+
+    public List<CoopProducts> getStore(List<CoopProducts> allProducts, String storeName){
+        List<CoopProducts> result = new ArrayList<>();
+        for (int i=0; i<allProducts.size(); i++){
+            if(allProducts.get(i).store.toLowerCase().contains(storeName.toLowerCase())){
+                result.add(allProducts.get(i));
+            }
+        }
+        Log.e("store", storeName);
+        return result;
     }
 
     @Override
