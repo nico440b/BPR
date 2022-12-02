@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopProducts;
+import com.example.bpr.Objects.FavoriteList;
 import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
 import com.google.android.material.button.MaterialButton;
@@ -34,14 +35,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.ViewHolder> {
+public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerViewFavoriteAdapter.ViewHolder> {
     private List<CoopProducts> _data;
-    private boolean isPlay = false;
     private RecyclerViewAdapter.OnButtonListener mOnButtonListener;
-    private ShoppingCart shoppingCart;
+    private FavoriteList favoriteList;
     Context mContext;
 
-    public RecyclerViewListAdapter(Context context, List<CoopProducts> data, RecyclerViewAdapter.OnButtonListener onButtonListener) {
+    public RecyclerViewFavoriteAdapter(Context context, List<CoopProducts> data, RecyclerViewAdapter.OnButtonListener onButtonListener) {
         this._data = data;
         this.mContext = context;
         this.mOnButtonListener = onButtonListener;
@@ -51,13 +51,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.shopping_cart_recyclerview, parent, false);
-
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinnerAmount);
-        List<String> values = new ArrayList<String>();
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, view.getResources().getStringArray(R.array.values));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
+        View view = layoutInflater.inflate(R.layout.favorite_list_recyclerview, parent, false);
 
         return new ViewHolder(view);
     }
@@ -68,7 +62,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
         holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
         holder.price.setText(Double.toString(_data.get(position).pris) + " kr");
         holder.store.setText(_data.get(position).store.substring(0, 1).toUpperCase() + _data.get(position).store.substring(1).toLowerCase());
-        holder.addedBy.setText("added by");
+
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +89,6 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
         TextView name2;
         Button deleteBtn;
         TextView store;
-        TextView addedBy;
 
         ViewHolder(View itemView){
             super(itemView);
@@ -104,7 +97,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
             price = itemView.findViewById(R.id.price);
             deleteBtn = itemView.findViewById(R.id.deleteButton);
             store = itemView.findViewById(R.id.productStore);
-            addedBy = itemView.findViewById(R.id.productAddedBy);
+
         }
 
     }
