@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bpr.MainActivity;
 import com.example.bpr.R;
+import com.example.bpr.ui.MainFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +26,16 @@ import java.util.List;
 public class ProfileFragment extends Fragment {
 
     Spinner dropdown;
+    private FirebaseAuth mAuth;
+    private String profile;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        profile = MainFragment.profileName;
+        mAuth = FirebaseAuth.getInstance();
+        TextView txt = view.findViewById(R.id.text_profile);
+        txt.setText(profile);
+
 
 
         return view;
