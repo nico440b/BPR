@@ -2,16 +2,20 @@ package com.example.bpr.Objects;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
+import com.example.bpr.Converters;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@Entity
+@Entity(tableName = "coopstore")
+@TypeConverters(Converters.class)
 public class CoopStore implements Serializable {
-
+    @PrimaryKey
     @SerializedName("Kardex")
     public int kardex;
     @SerializedName("RetailGroupName")
@@ -41,50 +45,14 @@ public class CoopStore implements Serializable {
     @SerializedName("StoreId")
     public int storeId;
     @SerializedName("Links")
-    public ArrayList<Link> links;
+    public List<Link> links;
     @SerializedName("Location")
     public Location location;
     @SerializedName("OpeningHours")
-    public ArrayList<OpeningHour> openingHours;
+    public List<OpeningHour> openingHours;
     @SerializedName("Departments")
-    public ArrayList<Department> departments;
+    public List<Department> departments;
 
 
-}
-@Entity
-class Department{
-    @SerializedName("Name")
-    public String name;
-    @SerializedName("Type")
-    public String type;
-    @SerializedName("OpeningHours")
-    public ArrayList<OpeningHour> openingHours;
-}
-@Entity
-class Link{
-    @SerializedName("Type")
-    public String type;
-    @SerializedName("Text")
-    public String text;
-}
-@Entity
-class Location{
-    public String type;
-    public ArrayList<Double> coordinates;
-}
-@Entity
-class OpeningHour{
-    @SerializedName("Text")
-    public String text;
-    @SerializedName("Day")
-    public String day;
-    @SerializedName("From")
-    public double from;
-    @SerializedName("To")
-    public double to;
-    @SerializedName("FromDate")
-    public String fromDate;
-    @SerializedName("ToDate")
-    public String toDate;
 }
 

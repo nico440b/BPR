@@ -5,6 +5,8 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 @Entity
 public class CoopStoreCore {
     @PrimaryKey
@@ -16,11 +18,11 @@ public class CoopStoreCore {
     public int pageSize;
     @SerializedName("TotalPagedItemsCount")
     public int totalPagedItemsCount;
-    /*
-    @SerializedName("Data")
-    public ArrayList<CoopStore> data;
 
-     */
+    @SerializedName("Data")
+    public List<CoopStore> data;
+
+
     @SerializedName("ApiObsolete")
     public boolean apiObsolete;
     @SerializedName("ApiVersion")

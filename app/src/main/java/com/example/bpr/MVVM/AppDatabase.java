@@ -15,12 +15,14 @@ import com.example.bpr.Dao.CoopProductsDao;
 import com.example.bpr.Dao.CoopStoreDao;
 import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopProducts;
+import com.example.bpr.Objects.CoopStore;
 import com.example.bpr.Objects.CoopStoreCore;
+import com.example.bpr.Objects.Location;
 import com.example.bpr.VolleyCallBack;
 
 import java.util.List;
 
-@Database(entities = {CoopStoreCore.class,CoopProducts.class},version = 2,exportSchema = false
+@Database(entities = {CoopStore.class,CoopProducts.class},version = 6,exportSchema = false
 )
 
 @TypeConverters({Converters.class})
@@ -62,11 +64,14 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            network.getCoopProducts(new VolleyCallBack() {
+
+            network.getCoopProducts("test",0, null,new VolleyCallBack() {
                 @Override
-                public void onSuccess(List<CoopProducts> result) {
+                public void onSuccessProducts(List<CoopProducts> result) {
                     list = result;
                 }
+
+
             });
             coopProductsDao.insertAll(list);
             return null;
