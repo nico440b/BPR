@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_login);
+        setContentView(R.layout.main_layout);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         Button loginBtn = findViewById(R.id.loginBtn);
@@ -106,27 +106,6 @@ public class MainActivity extends AppCompatActivity {
             if (permissionsToRequest.size() > 0)
                 requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-
-
-                email = mail.getText().toString();
-                password = pw.getText().toString();
-                if (email.equals("")||password.equals("")){
-                    Toast.makeText(MainActivity.this,"Fill In All The Fields",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Log.e("Rest Respone", "test login");
-                    signIn(email,password);
-                }
-
-
-
-            }
-        });
 
 
 
