@@ -29,11 +29,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     Context mContext;
     private ShoppingCart shoppingCart;
     private OnButtonListener mOnButtonListener;
+    private OnFavButtonListener mOnFavButtonListener;
 
-    public RecyclerViewAdapter(Context context, List<CoopProducts> data, OnButtonListener onButtonListener){
+
+    public RecyclerViewAdapter(Context context, List<CoopProducts> data, OnButtonListener onButtonListener, OnFavButtonListener onFavButtonListener){
         this._data = data;
         this.mContext = context;
         this.mOnButtonListener = onButtonListener;
+        this.mOnFavButtonListener = onFavButtonListener;
+
     }
 
     @NonNull
@@ -49,12 +53,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, int position){
         CoopProducts current = _data.get(position);
         holder.name.setText(_data.get(position).navn.substring(0, 1).toUpperCase() + _data.get(position).navn.substring(1).toLowerCase());
-        holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
+        if (_data.get(position).navn2.length()!=0) {
+            holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
+        }
         holder.price.setText(Double.toString(_data.get(position).pris) + " kr");
         holder.btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 mOnButtonListener.onButtonClick(holder.getAdapterPosition());
+            }
+        });
+
+        holder.favBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mOnFavButtonListener.onFavButtonClick(holder.getAdapterPosition());
             }
         });
     }
@@ -70,6 +83,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView price;
         TextView name2;
         Button btn;
+        Button favBtn;
 
         ViewHolder(View itemView, RecyclerViewAdapter adapter){
             super(itemView);
@@ -78,7 +92,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             name2 = itemView.findViewById(R.id.productName2Text);
             price = itemView.findViewById(R.id.price);
             btn = itemView.findViewById(R.id.addToCartButton);
+            favBtn = itemView.findViewById(R.id.favoriteButton);
         }
+    }
+
+    public interface OnFavButtonListener{
+        void onFavButtonClick(int position);
     }
 
     public interface OnButtonListener{

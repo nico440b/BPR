@@ -59,8 +59,9 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
         holder.name.setText(_data.get(position).navn.substring(0, 1).toUpperCase() + _data.get(position).navn.substring(1).toLowerCase());
-        holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
-        holder.price.setText(Double.toString(_data.get(position).pris) + " kr");
+        if (_data.get(position).navn2.length()!=0) {
+            holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
+        }        holder.price.setText(Double.toString(_data.get(position).pris) + " kr");
         holder.store.setText(_data.get(position).store.substring(0, 1).toUpperCase() + _data.get(position).store.substring(1).toLowerCase());
 
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {

@@ -26,7 +26,7 @@ import com.example.bpr.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListFragment extends Fragment implements RecyclerViewListAdapter.OnButtonListener {
+public class ListFragment extends Fragment implements RecyclerViewListAdapter.OnButtonListener, RecyclerViewListAdapter.OnCheckboxListener {
 
     // get from firebase
     ShoppingCart shoppingCart = new ShoppingCart();
@@ -48,7 +48,7 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
 
         recyclerView = view.findViewById(R.id.recyclerviewlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new RecyclerViewListAdapter(getContext(),shoppingCart.coopProducts.getValue(), this::onButtonClick);
+        adapter = new RecyclerViewListAdapter(getContext(),shoppingCart.coopProducts.getValue(), this::onButtonClick, this::onCheckboxClick);
         recyclerView.setAdapter(adapter);
         totalPrice.setText(Double.toString(calculateTotalPrice(shoppingCart.coopProducts.getValue())) + " kr");
 
@@ -69,5 +69,11 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
     public void onButtonClick(int position) {
         shoppingCart.coopProducts.getValue().remove(shoppingCart.coopProducts.getValue().get(position));
         Log.e("deleted product: ", shoppingCart.coopProducts.getValue().get(position).navn);
+    }
+
+    @Override
+    public void onCheckboxClick(int position) {
+        shoppingCart.coopProducts.getValue().remove(shoppingCart.coopProducts.getValue().get(position));
+        Log.e("checked product: ", shoppingCart.coopProducts.getValue().get(position).navn);
     }
 }
