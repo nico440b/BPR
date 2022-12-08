@@ -27,4 +27,6 @@ public class ShoppingCart {
     public void setCoopProducts(LiveData<List<CoopProducts>> coopProducts) {
         this.coopProducts = coopProducts;
     }
+
+
 }

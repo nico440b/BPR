@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.bpr.Adapters.ProfileAdapter;
@@ -56,11 +57,12 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
 
     private ProfileAdapter adapter;
     private String uID;
-    private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
     public FirebaseUser user;
     private RecyclerView recyclerView;
@@ -69,6 +71,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     private EditText profileName;
     private Button createBtn;
     private String pID;
+    private ProgressBar pBar;
 
 
 
@@ -112,6 +115,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
         MainActivity activity = (MainActivity) getActivity();
         uID = mParam1;
         profiles = new ArrayList<>();
+        pBar = view.findViewById(R.id.pBarProfileS);
 
         //TextView text = view.findViewById(R.id.ptext);
         FloatingActionButton btn = view.findViewById(R.id.floatingActionButton);
@@ -120,7 +124,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
         adapter = new ProfileAdapter(getContext(),profiles,this);
         recyclerView.setAdapter(adapter);
 
-
+        pBar.setVisibility(View.VISIBLE);
         getProfiles();
 
         updateView();
@@ -133,7 +137,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
         });
 
 
-
+        pBar.setVisibility(View.INVISIBLE);
         return view;
 
     }
@@ -143,6 +147,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     public void updateView(){
         adapter = new ProfileAdapter(getContext(),profiles,this);
         recyclerView.setAdapter(adapter);
+
     }
 
     public void getProfiles(){
