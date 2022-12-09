@@ -5,20 +5,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bpr.Converters;
@@ -30,21 +22,21 @@ import com.example.bpr.databinding.ActivityMainBinding;
 import com.example.bpr.ui.MainFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the {@link SignUpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment {
+public class SignUpFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,13 +47,13 @@ public class LoginFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private String email,password, name;
     private FirebaseAuth mAuth;
+    private String email,password, name;
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
     public FirebaseUser user;
 
 
-    public LoginFragment() {
+    public SignUpFragment() {
         // Required empty public constructor
     }
 
@@ -71,11 +63,11 @@ public class LoginFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
+     * @return A new instance of fragment SignUpFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
+    public static SignUpFragment newInstance(String param1, String param2) {
+        SignUpFragment fragment = new SignUpFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -90,50 +82,73 @@ public class LoginFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_login, container, false);
 
-        FirebaseApp.initializeApp(getContext());
+        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        Button signUpBtn = view.findViewById(R.id.signUpBtn);
+        EditText sMail = view.findViewById(R.id.emailSignUp);
+        EditText sPw = view.findViewById(R.id.pwSignUp);
+        EditText profileName = view.findViewById(R.id.nameSignUp);
+        FirebaseApp.initializeApp(getActivity());
         mAuth = FirebaseAuth.getInstance();
-        Button loginBtn = view.findViewById(R.id.loginBtn);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        EditText mail = view.findViewById(R.id.mailField);
-        EditText pw = view.findViewById(R.id.pwField);
-        TextView signUp = view.findViewById(R.id.signupText);
-        FragmentContainerView fragmentContainerView = view.findViewById(R.id.fragCV);
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = mail.getText().toString();
-                password = pw.getText().toString();
+                email = sMail.getText().toString();
+                password = sPw.getText().toString();
+                name = profileName.getText().toString();
                 if (email.equals("")||password.equals("")){
-                    Toast.makeText(getContext(),"Fill In All The Fields",Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(getActivity(),"Fill In All The Fields",Toast.LENGTH_LONG).show();
                 }
                 else {
+                    signUp(email,password,name);
                     signIn(email,password);
-
-
+                    getParentFragmentManager().beginTransaction().replace(R.id.fragCV, MainFragment.newInstance(user.getUid(),"")).commit();
                 }
-
             }
         });
-
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragCV,SignUpFragment.newInstance("","")).commit();
-
-            }
-        });
-
         return view;
+    }
+
+    private void signUp (String email, String password, String name){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            String uMail = user.getEmail();
+                            String uID = user.getUid();
+                            String uName = name;
+
+                            Map<String, Object> uData = new HashMap<>();
+                            uData.put("Email", uMail);
+
+                            Map<String, Object> uPData = new HashMap<>();
+                            uPData.put("Profile",uName);
+
+                            db.collection("Users").document(uID).set(uData);
+                            db.collection("Users").document(uID).collection("Profiles").document().set(uPData);
+
+
+
+                        } else {
+
+
+                            Toast.makeText(getActivity(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
     }
 
     private void signIn(String e,String p) {
@@ -144,8 +159,6 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
-                            getParentFragmentManager().beginTransaction().replace(R.id.fragCV, ProfileSelectorFragment.newInstance(user.getUid(),"")).commit();
-
 
                         } else {
 
@@ -154,6 +167,5 @@ public class LoginFragment extends Fragment {
                     }
                 });
     }
-
-
 }
+

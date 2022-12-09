@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_offers"
-        android:icon="@drawable/ic_baseline_discount_24"
+        android:icon="@drawable/ic_baseline_favorite_24"
         android:title="@string/title_offers" />
 
     <item

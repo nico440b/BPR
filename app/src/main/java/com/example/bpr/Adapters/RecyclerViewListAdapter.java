@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
 import com.google.android.material.button.MaterialButton;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,14 +38,16 @@ import java.util.List;
 public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.ViewHolder> {
     private List<CoopProducts> _data;
     private boolean isPlay = false;
-    private RecyclerViewAdapter.OnButtonListener mOnButtonListener;
+    private OnButtonListener mOnButtonListener;
+    private OnCheckboxListener mOnCheckboxListener;
     private ShoppingCart shoppingCart;
     Context mContext;
 
-    public RecyclerViewListAdapter(Context context, List<CoopProducts> data, RecyclerViewAdapter.OnButtonListener onButtonListener) {
+    public RecyclerViewListAdapter(Context context, List<CoopProducts> data, OnButtonListener onButtonListener, OnCheckboxListener onCheckboxListener) {
         this._data = data;
         this.mContext = context;
         this.mOnButtonListener = onButtonListener;
+        this.mOnCheckboxListener = onCheckboxListener;
     }
 
     @NonNull
@@ -63,14 +68,25 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
         holder.name.setText(_data.get(position).navn.substring(0, 1).toUpperCase() + _data.get(position).navn.substring(1).toLowerCase());
-        holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
+        if (_data.get(position).navn2.length()!=0) {
+            holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
+        }
         holder.price.setText(Double.toString(_data.get(position).pris) + " kr");
+        holder.store.setText(_data.get(position).store.substring(0, 1).toUpperCase() + _data.get(position).store.substring(1).toLowerCase());
+        holder.addedBy.setText("added by");
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mOnButtonListener.onButtonClick(holder.getAdapterPosition());
             }
         });
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+            }
+        });
+
 
     }
 
@@ -90,6 +106,9 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
         TextView price;
         TextView name2;
         Button deleteBtn;
+        TextView store;
+        TextView addedBy;
+        CheckBox checkBox;
 
         ViewHolder(View itemView){
             super(itemView);
@@ -97,8 +116,15 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
             name2 = itemView.findViewById(R.id.productName2Text);
             price = itemView.findViewById(R.id.price);
             deleteBtn = itemView.findViewById(R.id.deleteButton);
+            store = itemView.findViewById(R.id.productStore);
+            addedBy = itemView.findViewById(R.id.productAddedBy);
+            checkBox = itemView.findViewById(R.id.checkBox);
         }
 
+    }
+
+    public interface OnCheckboxListener{
+        void onCheckboxClick(int position);
     }
 
     public interface OnButtonListener{
