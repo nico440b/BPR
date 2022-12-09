@@ -16,10 +16,10 @@ public interface CoopProductsDao {
     @Query("Select * From coopproducts")
     LiveData<List<CoopProducts>> getAll();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<CoopProducts> coopProducts);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertOne(CoopProducts coopProducts);
 
     @Query("Delete From coopproducts")

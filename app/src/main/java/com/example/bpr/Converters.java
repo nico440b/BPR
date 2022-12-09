@@ -47,7 +47,7 @@ public class Converters {
             return Collections.emptyList();
         }
 
-        Type listType = new TypeToken<List<Link>>() {}.getType();
+        Type listType = new TypeToken<List<Department>>() {}.getType();
         Gson gson = new Gson();
         return gson.fromJson(list, listType);
     }
@@ -62,7 +62,7 @@ public class Converters {
             return Collections.emptyList();
         }
 
-        Type listType = new TypeToken<List<Link>>() {}.getType();
+        Type listType = new TypeToken<List<OpeningHour>>() {}.getType();
         Gson gson = new Gson();
         return gson.fromJson(list, listType);
     }
@@ -77,7 +77,7 @@ public class Converters {
             return null;
         }
 
-        Type listType = new TypeToken<List<Link>>() {}.getType();
+        Type listType = new TypeToken<List<Location>>() {}.getType();
         Gson gson = new Gson();
         return gson.fromJson(list, listType);
     }

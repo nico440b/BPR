@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     public LocationTrack locationTrack;
     double latitude = 0;
     double longitude = 0;
+    //Radius is in meters
+    public int radius = 5000;
 
 
     @Override
@@ -247,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void addCoopProducts(double latitude,double longitude)
     {
-        network.getCoopStores(latitude,longitude,new VolleyCallBackStores() {
+        network.getCoopStores(latitude,longitude,radius,new VolleyCallBackStores() {
             @Override
             public void onSuccesStores(List<CoopStore> stores) {
                 List<CoopStore> list = stores;

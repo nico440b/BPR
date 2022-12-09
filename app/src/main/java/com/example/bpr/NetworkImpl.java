@@ -71,7 +71,7 @@ public class NetworkImpl {
         }) {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Ocp-Apim-Subscription-Key", "78ed0c68a5d04b30b5e3e82ad25cbf50");
+                params.put("Ocp-Apim-Subscription-Key", "d22345c48d8a4472840a1eff80e74005");
 
 
                 return params;
@@ -83,9 +83,9 @@ public class NetworkImpl {
         Log.e("Rest Respone", coopProductsList.size() + "");
         return coopProductsList;
     }
-    public CoopStoreCore getCoopStores(double latitude,double longtitude, final VolleyCallBackStores callback) {
+    public CoopStoreCore getCoopStores(double latitude,double longtitude,int radius, final VolleyCallBackStores callback) {
         //returns all stores in a vicinity of the user based on their gps coordinates and how big of a radius they have decided
-        String URL = "https://api.cl.coop.dk/storeapi/v1/stores/find/radius/2000?latitude="+latitude+"&longitude="+longtitude;
+        String URL = "https://api.cl.coop.dk/storeapi/v1/stores/find/radius/"+radius+"?latitude="+latitude+"&longitude="+longtitude;
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
 
        CoopStoreCore core = new CoopStoreCore();
@@ -112,7 +112,7 @@ public class NetworkImpl {
         }) {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Ocp-Apim-Subscription-Key", "78ed0c68a5d04b30b5e3e82ad25cbf50");
+                params.put("Ocp-Apim-Subscription-Key", "d22345c48d8a4472840a1eff80e74005");
 
 
                 return params;

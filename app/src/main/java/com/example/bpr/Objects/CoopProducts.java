@@ -8,9 +8,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
-@Entity(tableName = "coopproducts")
+@Entity(tableName = "coopproducts",primaryKeys = {"ean","store"})
 public class CoopProducts {
-        @PrimaryKey
         @NonNull
         @SerializedName("Ean")
         public String ean;
@@ -22,6 +21,7 @@ public class CoopProducts {
         public double pris;
         @SerializedName("VareHierakiId")
         public int vareHierakiId;
+        @NonNull
         public String store;
         public int kardex;
         public double longitude;

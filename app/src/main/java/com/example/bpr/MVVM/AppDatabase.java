@@ -22,7 +22,7 @@ import com.example.bpr.VolleyCallBack;
 
 import java.util.List;
 
-@Database(entities = {CoopStore.class,CoopProducts.class},version = 5,exportSchema = false
+@Database(entities = {CoopStore.class,CoopProducts.class},version = 8,exportSchema = false
 )
 
 @TypeConverters({Converters.class})
