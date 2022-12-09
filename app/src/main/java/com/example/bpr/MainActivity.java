@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.fragment_login);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         Button loginBtn = findViewById(R.id.loginBtn);
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }).getException();
+                    });
         } catch (Exception e)
         {
             e.printStackTrace();
