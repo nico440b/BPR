@@ -91,9 +91,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_layout);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
-        Button loginBtn = findViewById(R.id.loginBtn);
-        EditText mail = findViewById(R.id.mailField);
-        EditText pw = findViewById(R.id.pwField);
+
         coopStoresViewModel = ViewModelProviders.of(this).get(CoopStoresViewModel.class);
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
