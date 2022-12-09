@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
     public FirebaseUser user;
+    private ProgressBar pBar;
 
 
     public LoginFragment() {
@@ -97,7 +99,8 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
-
+        pBar = view.findViewById(R.id.pBarLog);
+        pBar.setVisibility(View.INVISIBLE);
         FirebaseApp.initializeApp(getContext());
         mAuth = FirebaseAuth.getInstance();
         Button loginBtn = view.findViewById(R.id.loginBtn);
@@ -110,6 +113,7 @@ public class LoginFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pBar.setVisibility(View.VISIBLE);
                 email = mail.getText().toString();
                 password = pw.getText().toString();
                 if (email.equals("")||password.equals("")){

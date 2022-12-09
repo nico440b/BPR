@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class NetworkImpl {
     CoopStoreCore main = new CoopStoreCore();
+    private String coopKey = "b83aac68e13b46b2afc5925fd101b5f2";
 
 
 
@@ -71,7 +72,7 @@ public class NetworkImpl {
         }) {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Ocp-Apim-Subscription-Key", "78ed0c68a5d04b30b5e3e82ad25cbf50");
+                params.put("Ocp-Apim-Subscription-Key", coopKey);
 
 
                 return params;
@@ -112,7 +113,7 @@ public class NetworkImpl {
         }) {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Ocp-Apim-Subscription-Key", "78ed0c68a5d04b30b5e3e82ad25cbf50");
+                params.put("Ocp-Apim-Subscription-Key", coopKey);
 
 
                 return params;
@@ -153,7 +154,7 @@ public class NetworkImpl {
         }) {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Ocp-Apim-Subscription-Key", "78ed0c68a5d04b30b5e3e82ad25cbf50");
+                params.put("Ocp-Apim-Subscription-Key", coopKey);
 
 
                 return params;
