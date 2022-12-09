@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bpr.Adapters.RecyclerViewAdapter;
+import com.example.bpr.Adapters.RecyclerViewListAdapter;
 import com.example.bpr.LocationTrack;
 import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.MainActivity;
@@ -39,7 +41,21 @@ import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
 import com.example.bpr.SpinnerStateV0;
 import com.example.bpr.VolleyCallBack;
+import com.example.bpr.ui.list.ListFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +69,10 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     private NetworkImpl networkImpl = new NetworkImpl();
     private List<CoopProducts> products = new ArrayList<>();
     private CoopProductsViewModel coopProductsViewModel;
+    private SearchView search;
+    private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    public FirebaseUser user;
     ShoppingCart shoppingCart = new ShoppingCart();
     FavoriteList favoriteList = new FavoriteList();
     List<CoopProducts> filteredProductsAfterStore = new ArrayList<>();
@@ -92,6 +112,9 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
 
         textViewDistance[0] = view.findViewById(R.id.textViewDistance);
 
+        FirebaseApp.initializeApp(getActivity());
+        mAuth = FirebaseAuth.getInstance();
+
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         shoppingCart.coopProducts = coopProductsViewModel.getProducts();
         favoriteList.coopProducts = coopProductsViewModel.getProducts();
@@ -109,6 +132,23 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
 
         recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        search = view.findViewById(R.id.searchBar);
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (adapter!= null){
+                    adapter.getFilter().filter(newText);
+                }
+
+                return false;
+            }
+        });
 
         //--------STORES
 
@@ -450,6 +490,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i){
                         StringBuilder stringBuilder = new StringBuilder();
+                        textViewDistance[0].setText(stringBuilder.toString());
 
                         if(filteredProductsAfterOptions.size()==0){
                             if(filteredProductsAfterStore.size()==0){
@@ -590,8 +631,43 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
 
     @Override
     public void onButtonClick(int position) {
-        shoppingCart.coopProducts.getValue().add(products.get(position));
-        Log.e("added product to cart:", products.get(position).navn);
+        dataB.collection("Users")
+                .document(mAuth.getUid())
+                .collection("Shopping List")
+                .whereEqualTo("navn",products.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()){
+                    DocumentSnapshot snap  = task.getResult().getDocuments().get(0);
+                    String dID = snap.getId();
+                    dataB.collection("Users")
+                            .document(mAuth.getUid())
+                            .collection("Shopping List")
+                            .document(dID).update("amount", FieldValue.increment(1));
+
+                    dataB.collection("Users")
+                            .document(mAuth.getUid())
+                            .collection("Shopping List")
+                            .document(dID).update("check",false);
+                }
+                else {
+                    dataB.collection("Users")
+                            .document(mAuth.getUid())
+                            .collection("Shopping List")
+                            .add(products.get(position)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            dataB.collection("Users")
+                                    .document(mAuth.getUid())
+                                    .collection("Shopping List")
+                                    .document(documentReference.getId()).update("check",false);
+                        }
+                    });
+                }
+            }
+        });
+
+        Log.e("added product:", products.get(position).navn);
     }
 
     @Override

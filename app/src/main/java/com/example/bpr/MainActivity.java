@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_login);
+        setContentView(R.layout.main_layout);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         Button loginBtn = findViewById(R.id.loginBtn);
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         coopProductsViewModel.getProducts().observe(this, new Observer<List<CoopProducts>>() {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {
-                Toast.makeText(MainActivity.this, "Changed", Toast.LENGTH_SHORT).show();
+
                 liveDataProducts = coopProductsViewModel.getProducts();
                 //Log.e("Rest Respone", liveDataProducts.getValue().get(0).navn);
             }
@@ -160,35 +160,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-    private void signIn(String email,String password)
-    {
-        try {
-
-
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.e("Rest Respone", "Hallo tesyt");
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                updateUI(user);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Toast.makeText(MainActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
     private void updateUI(FirebaseUser user){
         setContentView(R.layout.activity_main);
 

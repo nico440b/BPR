@@ -29,6 +29,89 @@ public class CoopProducts {
         public double amount=1;
 
 
+        @NonNull
+        public String getEan() {
+                return ean;
+        }
+
+        public void setEan(@NonNull String ean) {
+                this.ean = ean;
+        }
+
+
+
+        public String getNavn() {
+                return navn;
+        }
+
+        public void setNavn(String navn) {
+                this.navn = navn;
+        }
+
+        public String getNavn2() {
+                return navn2;
+        }
+
+        public void setNavn2(String navn2) {
+                this.navn2 = navn2;
+        }
+
+        public double getPris() {
+                return pris;
+        }
+
+        public void setPris(double pris) {
+                this.pris = pris;
+        }
+
+        public int getVareHierakiId() {
+                return vareHierakiId;
+        }
+
+        public void setVareHierakiId(int vareHierakiId) {
+                this.vareHierakiId = vareHierakiId;
+        }
+
+        public String getStore() {
+                return store;
+        }
+
+        public void setStore(String store) {
+                this.store = store;
+        }
+
+        public int getKardex() {
+                return kardex;
+        }
+
+        public void setKardex(int kardex) {
+                this.kardex = kardex;
+        }
+
+        public double getLongitude() {
+                return longitude;
+        }
+
+        public void setLongitude(double longitude) {
+                this.longitude = longitude;
+        }
+
+        public double getLatitude() {
+                return latitude;
+        }
+
+        public void setLatitude(double latitude) {
+                this.latitude = latitude;
+        }
+
+        public double getAmount() {
+                return amount;
+        }
+
+        public void setAmount(double amount) {
+                this.amount = amount;
+        }
+
         public Location getLocation()
         {
                 Location location = new Location("provider");
