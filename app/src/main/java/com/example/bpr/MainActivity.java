@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     double latitude = 0;
     double longitude = 0;
     //Radius is in meters
-    public int radius = 5000;
+    public int radius = 10000;
 
 
     @Override

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,10 +56,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
         CoopProducts current = _data.get(position);
+
         holder.name.setText(_data.get(position).navn.substring(0, 1).toUpperCase() + _data.get(position).navn.substring(1).toLowerCase());
         if (_data.get(position).navn2.length()!=0) {
             holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
         }
+
         holder.price.setText(Double.toString(_data.get(position).pris) + " kr");
         holder.btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -120,7 +123,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView price;
         TextView name2;
         Button btn;
-        Button favBtn;
+        ImageButton favBtn;
 
         ViewHolder(View itemView, RecyclerViewAdapter adapter){
             super(itemView);
