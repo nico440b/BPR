@@ -41,6 +41,7 @@ import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
 import com.example.bpr.SpinnerStateV0;
 import com.example.bpr.VolleyCallBack;
+import com.example.bpr.ui.MainFragment;
 import com.example.bpr.ui.list.ListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,7 +68,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private NetworkImpl networkImpl = new NetworkImpl();
-    private List<CoopProducts> products = new ArrayList<>();
+    private List<CoopProducts> products= new ArrayList<>();
+    private List<CoopProducts> favorites= new ArrayList<>();
     private CoopProductsViewModel coopProductsViewModel;
     private SearchView search;
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
@@ -116,14 +118,14 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         mAuth = FirebaseAuth.getInstance();
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
-        shoppingCart.coopProducts = coopProductsViewModel.getProducts();
-        favoriteList.coopProducts = coopProductsViewModel.getProducts();
+       // shoppingCart.coopProducts = coopProductsViewModel.getProducts();
+        //favoriteList.coopProducts = coopProductsViewModel.getProducts();
         coopProductsViewModel.getProducts().observe(getViewLifecycleOwner(), new Observer<List<CoopProducts>>() {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {
                 Toast.makeText(view.getContext(), "Changed", Toast.LENGTH_SHORT).show();
                 products = coopProducts;
-                Log.e("Rest Respone", products.get(0).navn);
+
                 updateView(products);
             }
         });
@@ -672,8 +674,27 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
 
     @Override
     public void onFavButtonClick(int position){
-        favoriteList.coopProducts.getValue().add(products.get(position));
-        Log.e("added product to fav:", products.get(position).navn);
+        dataB.collection("Users")
+                .document(mAuth.getUid())
+                .collection("Profiles")
+                .document(MainFragment.profileID)
+                .collection("Favorites")
+                .whereEqualTo("navn",products.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()){
+
+                }
+                else{
+                    dataB.collection("Users")
+                            .document(mAuth.getUid())
+                            .collection("Profiles")
+                            .document(MainFragment.profileID)
+                            .collection("Favorites")
+                            .add(products.get(position));
+                }
+            }
+        });
 
     }
 

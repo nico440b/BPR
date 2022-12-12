@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bpr.Objects.Profile;
 import com.example.bpr.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder>{
-    private ArrayList<String> data;
+    private List<Profile> data;
     Context mContext;
     private OnProfileListener mOnProfileListener;
 
 
-    public ProfileAdapter(Context context, ArrayList<String> data, OnProfileListener onProfileListener){
+    public ProfileAdapter(Context context, ArrayList<Profile> data, OnProfileListener onProfileListener){
         this.data = data;
         this.mContext = context;
         this.mOnProfileListener = onProfileListener;
@@ -40,8 +41,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProfileAdapter.ViewHolder holder, int position) {
-        holder.name.setText(data.get(position));
-        String profile = data.get(position);
+        holder.name.setText(data.get(position).getName());
+
 
     }
 

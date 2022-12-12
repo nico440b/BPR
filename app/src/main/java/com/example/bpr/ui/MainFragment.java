@@ -30,7 +30,7 @@ public class MainFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    public static String profileName;
+    public static String profileName, profileID;
 
     public MainFragment() {
         // Required empty public constructor
@@ -63,6 +63,8 @@ public class MainFragment extends Fragment {
         }
 
         profileName = mParam1;
+        profileID = mParam2;
+
     }
 
     @Override

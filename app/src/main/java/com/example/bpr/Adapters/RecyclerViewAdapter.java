@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -120,7 +121,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView price;
         TextView name2;
         Button btn;
-        Button favBtn;
+        ImageButton favBtn;
 
         ViewHolder(View itemView, RecyclerViewAdapter adapter){
             super(itemView);

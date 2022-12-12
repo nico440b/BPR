@@ -21,6 +21,7 @@ import com.example.bpr.Adapters.ProfileAdapter;
 import com.example.bpr.Adapters.RecyclerViewAdapter;
 import com.example.bpr.MainActivity;
 import com.example.bpr.MyAdapter;
+import com.example.bpr.Objects.Profile;
 import com.example.bpr.R;
 import com.example.bpr.ui.MainFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,7 +54,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private ArrayList<String> profiles;
+    private ArrayList<Profile> profiles;
 
     private ProfileAdapter adapter;
     private String uID;
@@ -72,6 +73,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     private Button createBtn;
     private String pID;
     private ProgressBar pBar;
+
 
 
 
@@ -114,7 +116,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
         View view = inflater.inflate(R.layout.fragment_profile_selector, container, false);
         MainActivity activity = (MainActivity) getActivity();
         uID = mParam1;
-        profiles = new ArrayList<>();
+        profiles = new ArrayList<Profile>();
         pBar = view.findViewById(R.id.pBarProfileS);
 
         //TextView text = view.findViewById(R.id.ptext);
@@ -157,7 +159,8 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
                 if (task.isSuccessful()){
                     for(QueryDocumentSnapshot document : task.getResult()){
                         // profiles.add(document.getId());
-                        profiles.add(document.getString("Profile"));
+                        Profile profile = new Profile(document.getString("Profile"),document.getId());
+                        profiles.add(profile);
                         updateView();
 
                     }
@@ -176,7 +179,8 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
                 if (task.isSuccessful()){
                     for(QueryDocumentSnapshot document : task.getResult()){
                         if (document.getId().equals(pID)){
-                            profiles.add(document.getString("Profile"));
+                            Profile profile = new Profile(document.getString("Profile"),document.getId());
+                            profiles.add(profile);
                             updateView();
                         }
                     }
@@ -187,7 +191,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
 
     @Override
     public void onProfileClick(int position) {
-        getParentFragmentManager().beginTransaction().replace(R.id.fragCV, MainFragment.newInstance(profiles.get(position),"")).commit();
+        getParentFragmentManager().beginTransaction().replace(R.id.fragCV, MainFragment.newInstance(profiles.get(position).getName(),profiles.get(position).getID())).commit();
     }
 
     public void createNewProfileDialog(){
