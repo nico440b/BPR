@@ -33,9 +33,11 @@ import com.example.bpr.SpinnerStateV0;
 import com.example.bpr.ui.MainFragment;
 import com.example.bpr.ui.list.ListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -114,8 +116,32 @@ public class OffersFragment extends Fragment implements RecyclerViewFavoriteAdap
 
     @Override
     public void onButtonClick(int position) {
-        favoriteList.coopProducts.getValue().remove(favoriteList.coopProducts.getValue().get(position));
-        Log.e("deleted product: ", favoriteList.coopProducts.getValue().get(position).navn);
+        dataB.collection("Users")
+                .document(mAuth.getUid())
+                .collection("Profiles")
+                .document(MainFragment.profileID)
+                .collection("Favorites")
+                .whereEqualTo("navn",favs.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()){
+                    DocumentSnapshot snap  = task.getResult().getDocuments().get(0);
+                    String dID = snap.getId();
+                    dataB.collection("Users")
+                            .document(mAuth.getUid())
+                            .collection("Shopping List")
+                            .document(dID).delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    favs.remove(position);
+                                    adapter.notifyDataSetChanged();
+
+                                }
+                            });
+                }
+            }
+        });
     }
 
 }

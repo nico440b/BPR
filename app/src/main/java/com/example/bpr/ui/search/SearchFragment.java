@@ -41,6 +41,7 @@ import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
 import com.example.bpr.SpinnerStateV0;
 import com.example.bpr.VolleyCallBack;
+import com.example.bpr.ui.MainFragment;
 import com.example.bpr.ui.list.ListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -680,8 +681,27 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
 
     @Override
     public void onFavButtonClick(int position){
-        favoriteList.coopProducts.getValue().add(products.get(position));
-        Log.e("added product to fav:", products.get(position).navn);
+        dataB.collection("Users")
+                .document(mAuth.getUid())
+                .collection("Profiles")
+                .document(MainFragment.profileID)
+                .collection("Favorites")
+                .whereEqualTo("navn",products.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()){
+
+                }
+                else{
+                    dataB.collection("Users")
+                            .document(mAuth.getUid())
+                            .collection("Profiles")
+                            .document(MainFragment.profileID)
+                            .collection("Favorites")
+                            .add(products.get(position));
+                }
+            }
+        });
     }
 
 
