@@ -2,6 +2,7 @@ package com.example.bpr.Objects;
 
 import android.location.Location;
 import android.location.LocationManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -123,18 +124,18 @@ public class CoopProducts {
         public String calculateDistanceString(Location location)
         {
                 Location location1 = new Location("provider");
-                location1.setLatitude(latitude);
-                location1.setLongitude(longitude);
+                location1.setLatitude(longitude);
+                location1.setLongitude(latitude);
                 Float distance = location.distanceTo(location1);
-                return distance/1000000 +" KM";
+                return distance/1000 +" KM";
         }
         public double calculateDistanceDouble(Location location)
         {
                 Location location1 = new Location("provider");
-                location1.setLatitude(latitude);
-                location1.setLongitude(longitude);
+                location1.setLatitude(longitude);
+                location1.setLongitude(latitude);
                 Float distance = location.distanceTo(location1);
-                return (double) distance/1000000;
+                return (double) distance/1000;
         }
 
 
