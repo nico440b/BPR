@@ -675,7 +675,6 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                 }
             }
         });
-
         Log.e("added product:", products.get(position).navn);
     }
 
@@ -683,7 +682,6 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     public void onFavButtonClick(int position){
         favoriteList.coopProducts.getValue().add(products.get(position));
         Log.e("added product to fav:", products.get(position).navn);
-
     }
 
 
