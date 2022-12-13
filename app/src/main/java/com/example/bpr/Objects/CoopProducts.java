@@ -29,7 +29,6 @@ public class CoopProducts {
         public double latitude;
         public double amount=1;
 
-
         @NonNull
         public String getEan() {
                 return ean;
@@ -38,8 +37,6 @@ public class CoopProducts {
         public void setEan(@NonNull String ean) {
                 this.ean = ean;
         }
-
-
 
         public String getNavn() {
                 return navn;
@@ -124,20 +121,20 @@ public class CoopProducts {
         public String calculateDistanceString(Location location)
         {
                 Location location1 = new Location("provider");
-                location1.setLatitude(longitude);
-                location1.setLongitude(latitude);
-                Float distance = location.distanceTo(location1);
+                location1.setLatitude(latitude);
+                location1.setLongitude(longitude);
+                float distance = location.distanceTo(location1);
                 return distance/1000 +" KM";
         }
+
         public double calculateDistanceDouble(Location location)
         {
                 Location location1 = new Location("provider");
-                location1.setLatitude(longitude);
-                location1.setLongitude(latitude);
-                Float distance = location.distanceTo(location1);
+                location1.setLatitude(latitude);
+                location1.setLongitude(longitude);
+                float distance = location.distanceTo(location1);
                 return (double) distance/1000;
         }
-
 
         public double getShoppingCartProductPrice(){
                 return amount*pris;

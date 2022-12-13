@@ -52,7 +52,6 @@ public class SignUpFragment extends Fragment {
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
     public FirebaseUser user;
 
-
     public SignUpFragment() {
         // Required empty public constructor
     }
@@ -137,15 +136,9 @@ public class SignUpFragment extends Fragment {
 
                             db.collection("Users").document(uID).set(uData);
                             db.collection("Users").document(uID).collection("Profiles").document().set(uPData);
-
-
-
                         } else {
-
-
                             Toast.makeText(getActivity(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 });
@@ -163,7 +156,6 @@ public class SignUpFragment extends Fragment {
                         } else {
 
                         }
-
                     }
                 });
     }

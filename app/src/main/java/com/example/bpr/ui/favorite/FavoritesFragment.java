@@ -1,43 +1,31 @@
-package com.example.bpr.ui.offers;
+package com.example.bpr.ui.favorite;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bpr.Adapters.RecyclerViewFavoriteAdapter;
-import com.example.bpr.Adapters.RecyclerViewListAdapter;
 import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
-import com.example.bpr.MainActivity;
-import com.example.bpr.MyAdapter;
 import com.example.bpr.Objects.CoopProducts;
 import com.example.bpr.Objects.FavoriteList;
-import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
-import com.example.bpr.SpinnerStateV0;
 import com.example.bpr.ui.MainFragment;
-import com.example.bpr.ui.list.ListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -45,9 +33,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class OffersFragment extends Fragment implements RecyclerViewFavoriteAdapter.OnButtonListener{
+public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteAdapter.OnButtonListener, RecyclerViewFavoriteAdapter.OnAddCartListener{
 
     Spinner dropdown;
     boolean isPlay;
@@ -62,7 +49,7 @@ public class OffersFragment extends Fragment implements RecyclerViewFavoriteAdap
     private FirebaseAuth mAuth;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_offers, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         mAuth = FirebaseAuth.getInstance();
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         favoriteList.coopProducts = coopProductsViewModel.getProducts();
@@ -93,11 +80,8 @@ public class OffersFragment extends Fragment implements RecyclerViewFavoriteAdap
 
                         recyclerView = view.findViewById(R.id.recyclerviewlist);
                         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                        adapter = new RecyclerViewFavoriteAdapter(getContext(),favs, OffersFragment.this::onButtonClick);
+                        adapter = new RecyclerViewFavoriteAdapter(getContext(),favs, FavoritesFragment.this::onButtonClick, FavoritesFragment.this::onAddButtonClick);
                         recyclerView.setAdapter(adapter);
-
-
-
                     }
                 } else {
                     task.getException();
@@ -105,10 +89,9 @@ public class OffersFragment extends Fragment implements RecyclerViewFavoriteAdap
             }
         });
 
-
         recyclerView = view.findViewById(R.id.recyclerviewlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new RecyclerViewFavoriteAdapter(getContext(),favs, OffersFragment.this::onButtonClick);
+        adapter = new RecyclerViewFavoriteAdapter(getContext(),favs, FavoritesFragment.this::onButtonClick, this::onAddButtonClick);
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -136,12 +119,51 @@ public class OffersFragment extends Fragment implements RecyclerViewFavoriteAdap
                                 public void onSuccess(Void unused) {
                                     favs.remove(position);
                                     adapter.notifyDataSetChanged();
-
                                 }
                             });
                 }
             }
         });
+        Toast.makeText(getContext(), "Product removed from favorite list", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onAddButtonClick(int position) {
+        dataB.collection("Users")
+                .document(mAuth.getUid())
+                .collection("Shopping List")
+                .whereEqualTo("navn",favs.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()){
+                            DocumentSnapshot snap  = task.getResult().getDocuments().get(0);
+                            String dID = snap.getId();
+                            dataB.collection("Users")
+                                    .document(mAuth.getUid())
+                                    .collection("Shopping List")
+                                    .document(dID).update("amount", FieldValue.increment(1));
+
+                            dataB.collection("Users")
+                                    .document(mAuth.getUid())
+                                    .collection("Shopping List")
+                                    .document(dID).update("check",false);
+                        }
+                        else {
+                            dataB.collection("Users")
+                                    .document(mAuth.getUid())
+                                    .collection("Shopping List")
+                                    .add(favs.get(position)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            dataB.collection("Users")
+                                                    .document(mAuth.getUid())
+                                                    .collection("Shopping List")
+                                                    .document(documentReference.getId()).update("check",false);
+                                        }
+                                    });
+                        }
+                    }
+                });
+        Toast.makeText(getContext(), "Product added to shopping cart", Toast.LENGTH_SHORT).show();
+    }
 }

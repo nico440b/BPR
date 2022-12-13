@@ -18,6 +18,7 @@ public class CoopProductsAdapter extends RecyclerView.Adapter<CoopProductsAdapte
             super(itemView);
         }
     }
+
     @NonNull
     @Override
     public CoopProductsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,7 +29,6 @@ public class CoopProductsAdapter extends RecyclerView.Adapter<CoopProductsAdapte
     public void onBindViewHolder(@NonNull CoopProductsHolder holder, int position) {
 
     }
-
 
     @Override
     public int getItemCount() {

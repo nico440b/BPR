@@ -57,12 +57,6 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.shopping_cart_recyclerview, parent, false);
 
-        //Spinner spinner = (Spinner) view.findViewById(R.id.spinnerAmount);
-        List<String> values = new ArrayList<String>();
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, view.getResources().getStringArray(R.array.values));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinner.setAdapter(dataAdapter);
-
         return new ViewHolder(view);
     }
 
@@ -72,20 +66,22 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
         holder.name2.setText(_data.get(position).navn2.substring(0, 1).toUpperCase() + _data.get(position).navn2.substring(1).toLowerCase());
         holder.price.setText(Double.toString(_data.get(position).pris)+" kr");
         holder.store.setText(_data.get(position).store.substring(0, 1).toUpperCase() + _data.get(position).store.substring(1).toLowerCase());
-
         holder.amount.setText(Double.toString(_data.get(position).amount));
+
         holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOnButtonListener.addItem(holder.getAdapterPosition());
             }
         });
+
         holder.sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOnButtonListener.subItem(holder.getAdapterPosition());
             }
         });
+
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,18 +101,16 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
                 }
             }
         });
-
     }
-
 
     @Override
     public int getItemCount() {
         if(_data != null){
             return _data.size();
         }
-        else
+        else {
             return 0;
-
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -129,7 +123,6 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
         TextView amount;
         Button add, sub;
 
-
         ViewHolder(View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.productNameText);
@@ -141,9 +134,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
             amount = itemView.findViewById(R.id.spinnerAmount);
             add = itemView.findViewById(R.id.addBtn);
             sub = itemView.findViewById(R.id.removeBtn);
-
         }
-
     }
 
     public interface OnButtonListener{
@@ -152,10 +143,4 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
         void addItem(int position);
         void subItem(int position);
     }
-
-
-
-
-
-
 }

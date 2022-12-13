@@ -30,6 +30,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         this.mOnProfileListener = onProfileListener;
 
     }
+
     @NonNull
     @NotNull
     @Override
@@ -42,8 +43,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProfileAdapter.ViewHolder holder, int position) {
         holder.name.setText(data.get(position).getName());
-
-
     }
 
     @Override

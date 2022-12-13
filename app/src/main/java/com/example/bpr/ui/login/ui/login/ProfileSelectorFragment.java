@@ -59,7 +59,6 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     private ProfileAdapter adapter;
     private String uID;
 
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -73,9 +72,6 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     private Button createBtn;
     private String pID;
     private ProgressBar pBar;
-
-
-
 
     public ProfileSelectorFragment() {
         // Required empty public constructor
@@ -138,13 +134,10 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
             }
         });
 
-
         pBar.setVisibility(View.INVISIBLE);
         return view;
 
     }
-
-
 
     public void updateView(){
         adapter = new ProfileAdapter(getContext(),profiles,this);
@@ -168,7 +161,6 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
                     task.getException();
                 }
             }
-
         });
     }
 
@@ -220,10 +212,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
                 updateProfiles();
                 updateView();
                 dialog.cancel();
-
             }
         });
     }
-
-
 }

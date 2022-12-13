@@ -21,9 +21,11 @@ public class ShoppingCart {
     {
         this.coopProducts = coopProducts;
     }
+
     public LiveData<List<CoopProducts>> getCoopProducts() {
         return coopProducts;
     }
+
     public void setCoopProducts(LiveData<List<CoopProducts>> coopProducts) {
         this.coopProducts = coopProducts;
     }

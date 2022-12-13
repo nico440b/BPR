@@ -18,11 +18,8 @@ public class CoopStoreCore {
     public int pageSize;
     @SerializedName("TotalPagedItemsCount")
     public int totalPagedItemsCount;
-
     @SerializedName("Data")
     public List<CoopStore> data;
-
-
     @SerializedName("ApiObsolete")
     public boolean apiObsolete;
     @SerializedName("ApiVersion")

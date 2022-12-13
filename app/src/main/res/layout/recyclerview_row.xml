@@ -102,7 +102,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="right"
                         android:layout_marginTop="7dp"
-                        android:text="160,-"
+                        android:text="Price"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 

@@ -20,22 +20,14 @@ import androidx.core.app.ActivityCompat;
 public class LocationTrack extends Service implements LocationListener {
 //This code was made using this as a source https://www.digitalocean.com/community/tutorials/android-location-api-tracking-gps
     private final Context mContext;
-
-
     boolean checkGPS = false;
-
-
     boolean checkNetwork = false;
-
     boolean canGetLocation = false;
-
     public Location loc;
     double latitude;
     double longitude;
 
-
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-
 
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     protected LocationManager locationManager;
@@ -81,8 +73,6 @@ public class LocationTrack extends Service implements LocationListener {
                             longitude = loc.getLongitude();
                         }
                     }
-
-
                 }
 
 
@@ -94,7 +84,6 @@ public class LocationTrack extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return loc;
     }
 
@@ -138,7 +127,6 @@ public class LocationTrack extends Service implements LocationListener {
                 dialog.cancel();
             }
         });
-
 
         alertDialog.show();
     }

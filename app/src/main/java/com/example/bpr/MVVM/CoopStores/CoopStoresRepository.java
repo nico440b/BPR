@@ -30,6 +30,7 @@ public class CoopStoresRepository {
     {
         new CoopStoresRepository.InsertAllCoopStoresAsyncTask(coopStoreDao).execute(stores);
     }
+
     public LiveData<List<CoopStore>> getAll() {
         return stores;
     }
@@ -58,7 +59,6 @@ public class CoopStoresRepository {
         private DeleteCoopProductsAsyncTask(CoopStoreDao coopStoreDao) {
             this.coopStoreDao = coopStoreDao;
         }
-
 
         @Override
         protected Void doInBackground(Void... Void) {

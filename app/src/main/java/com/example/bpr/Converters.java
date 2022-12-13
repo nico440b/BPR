@@ -24,8 +24,6 @@ import java.util.List;
 public class Converters {
     public Gson gson = new Gson();
 
-
-
     @TypeConverter
     public static List<Link> fromList(String list) {
         if (list == null) {
@@ -108,7 +106,4 @@ public class Converters {
         Gson gson = new Gson();
         return gson.toJson(someObjects);
     }
-
-
-
 }

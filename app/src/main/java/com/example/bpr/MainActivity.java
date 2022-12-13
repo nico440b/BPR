@@ -82,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
     double latitude = 0;
     double longitude = 0;
     //Radius is in meters
-    public int radius = 10000;
-
+    public int radius = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,29 +98,21 @@ public class MainActivity extends AppCompatActivity {
         //get the permissions we have asked for before but are not granted..
         //we will store this in a global list to access later.
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-
             if (permissionsToRequest.size() > 0)
                 requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
-
-
 
         context = getApplicationContext();
         //core = network.CoopStoreAPI();
 
         locationTrack = new LocationTrack(MainActivity.this);
 
-
         if (locationTrack.canGetLocation()) {
-
 
             longitude = locationTrack.getLongitude();
             latitude = locationTrack.getLatitude();
 
-            Log.e("Rest Respone", longitude + " " + latitude);
             addCoopProducts(latitude,longitude);
 
              } else {
@@ -129,21 +120,14 @@ public class MainActivity extends AppCompatActivity {
             locationTrack.showSettingsAlert();
             }
 
-
-
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
-
-
         coopProductsViewModel.getProducts().observe(this, new Observer<List<CoopProducts>>() {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {
 
                 liveDataProducts = coopProductsViewModel.getProducts();
-                //Log.e("Rest Respone", liveDataProducts.getValue().get(0).navn);
             }
         });
-
-
 
         //Alarm
         calendar = Calendar.getInstance();
@@ -154,8 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
         registerMyAlarmBroadcast();
         alarmManager.set(AlarmManager.RTC_WAKEUP,intendedTime,pendingIntent);
-
-
     }
 
     private void updateUI(FirebaseUser user){
@@ -177,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
                 result.add(perm);
             }
         }
-
         return result;
     }
 
@@ -193,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean canMakeSmores() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
+
     public void addCoopProducts(double latitude,double longitude)
     {
         network.getCoopStores(latitude,longitude,radius,new VolleyCallBackStores() {
@@ -209,20 +191,11 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccessProducts(List<CoopProducts> result) {
 
                             coopProducts = result;
-                            //Log.e("Length to product", String.valueOf(locationTrack.loc.distanceTo(coopProducts.get(1).getLocation())/1000000) + " KM");
                             coopProductsViewModel.insertAll(coopProducts);
-
-
-
-
                         }
-
                     });
                 }
-
             }
-
-
         });
     }
 
@@ -257,12 +230,9 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                     }
-
                 }
-
                 break;
         }
-
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
@@ -300,12 +270,10 @@ public class MainActivity extends AppCompatActivity {
         pendingIntent = PendingIntent.getBroadcast( this, 0, new Intent("com.alarm.example"),0 );
         alarmManager = (AlarmManager)(this.getSystemService( Context.ALARM_SERVICE ));
     }
+
     private void UnregisterAlarmBroadcast()
     {
         alarmManager.cancel(pendingIntent);
         getBaseContext().unregisterReceiver(broadcastReceiver);
     }
-
-
-
 }

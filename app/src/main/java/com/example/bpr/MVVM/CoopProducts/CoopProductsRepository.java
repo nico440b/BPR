@@ -50,6 +50,7 @@ public class CoopProductsRepository {
             return null;
         }
     }
+
     private static class InsertAllCoopProductsAsyncTask extends AsyncTask<List<CoopProducts>, Void, Void> {
         private CoopProductsDao coopProductsDao;
 

@@ -36,8 +36,6 @@ public class ProfileFragment extends Fragment {
         TextView txt = view.findViewById(R.id.text_profile);
         txt.setText(profile);
 
-
-
         return view;
     }
 

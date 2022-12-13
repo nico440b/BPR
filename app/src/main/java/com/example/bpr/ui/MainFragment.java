@@ -61,10 +61,8 @@ public class MainFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
         profileName = mParam1;
         profileID = mParam2;
-
     }
 
     @Override

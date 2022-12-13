@@ -28,9 +28,6 @@ public class NetworkImpl {
     CoopStoreCore main = new CoopStoreCore();
     private String coopKey = "d22345c48d8a4472840a1eff80e74005";
 
-
-
-
     public ArrayList<CoopProducts> getCoopProducts(String store, int kardex, Location location,final VolleyCallBack callBack) {
         //gets all products for a specific store
         String URL = "https://api.cl.coop.dk/productapi/v1/product/"+kardex;
@@ -40,8 +37,6 @@ public class NetworkImpl {
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-
-
                 for(int i = 0; i < response.length();i++)
                 {
                     try {
@@ -50,19 +45,15 @@ public class NetworkImpl {
                         CoopProducts coopProducts = gson.fromJson(jsonObject.toString(),CoopProducts.class);
                         coopProducts.store=store;
                         coopProducts.kardex=kardex;
-                        coopProducts.latitude = location.coordinates.get(0);
-                        coopProducts.longitude = location.coordinates.get(1);
+                        coopProducts.latitude = location.coordinates.get(1);
+                        coopProducts.longitude = location.coordinates.get(0);
                         coopProductsList.add(coopProducts);
-                        //Log.e("Rest Respone", coopProductsList.get(i).navn);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
                 callBack.onSuccessProducts(coopProductsList);
-
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -73,15 +64,10 @@ public class NetworkImpl {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Ocp-Apim-Subscription-Key", coopKey);
-
-
                 return params;
-
             }
         };
         requestQueue.add(objectRequest);
-
-        Log.e("Rest Respone", coopProductsList.size() + "");
         return coopProductsList;
     }
     public CoopStoreCore getCoopStores(double latitude,double longtitude,int radius, final VolleyCallBackStores callback) {
@@ -89,11 +75,10 @@ public class NetworkImpl {
         String URL = "https://api.cl.coop.dk/storeapi/v1/stores/find/radius/"+radius+"?latitude="+latitude+"&longitude="+longtitude;
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.context);
 
-       CoopStoreCore core = new CoopStoreCore();
+        CoopStoreCore core = new CoopStoreCore();
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.e("Rest Respone", response.toString());
                 try {
                     Gson gson = new Gson();
                     CoopStoreCore root = gson.fromJson(response.toString(), CoopStoreCore.class);
@@ -115,14 +100,13 @@ public class NetworkImpl {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Ocp-Apim-Subscription-Key", coopKey);
 
-
                 return params;
-
             }
         };
         requestQueue.add(objectRequest);
         return main;
     }
+
     public ArrayList<CoopProducts> getStandardCoopProducts() {
         //gets only the standard products for a specific store
         String URL = "https://api.cl.coop.dk/assortmentapi/v1/product/24181";
@@ -131,7 +115,6 @@ public class NetworkImpl {
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                Log.e("Rest Respone", response.toString());
                 for(int i = 0; i < response.length();i++)
                 {
                     try {
@@ -139,12 +122,10 @@ public class NetworkImpl {
                         Gson gson = new Gson();
                         CoopProducts coopProducts = gson.fromJson(jsonObject.toString(),CoopProducts.class);
                         coopProductsList.add(coopProducts);
-                        Log.e("Rest Respone", coopProducts.navn);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -156,9 +137,7 @@ public class NetworkImpl {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Ocp-Apim-Subscription-Key", coopKey);
 
-
                 return params;
-
             }
         };
         requestQueue.add(objectRequest);

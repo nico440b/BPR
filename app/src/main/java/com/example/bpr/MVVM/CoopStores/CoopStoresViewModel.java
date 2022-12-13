@@ -20,7 +20,6 @@ public class CoopStoresViewModel extends AndroidViewModel {
         stores = coopStoresRepository.getAll();
     }
 
-
     public void insertAll(List<CoopStore> coopStores)
     {
         coopStoresRepository.insertAll(coopStores);
@@ -30,6 +29,7 @@ public class CoopStoresViewModel extends AndroidViewModel {
     {
         coopStoresRepository.deleteAll();
     }
+
     public LiveData<List<CoopStore>> getAll()
     {
         return coopStoresRepository.getAll();

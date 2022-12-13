@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +48,6 @@ import java.util.List;
 
 public class ListFragment extends Fragment implements RecyclerViewListAdapter.OnButtonListener {
 
-    // get from firebase
     ShoppingCart shoppingCart = new ShoppingCart();
 
     RecyclerView recyclerView;
@@ -69,7 +69,6 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
         totalPrice = view.findViewById(R.id.totalPrice);
         addBtn = view.findViewById(R.id.addBtn);
         subBtn = view.findViewById(R.id.removeBtn);
-        //view.findViewById(R.id.divider2).setVisibility(View.INVISIBLE);
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         dataB.collection("Users").document(mAuth.getUid()).collection("Shopping List").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -100,16 +99,12 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
                         if (calculateTotalPrice(cart)!=0){
                             totalPrice.setVisibility(View.VISIBLE);
                         }
-
-
                     }
                 } else {
                     task.getException();
                 }
             }
         });
-
-
         return view;
     }
 
@@ -131,9 +126,6 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
                         product.setPris(document.getDouble("pris"));
                         product.setStore(document.getString("store"));
 
-
-
-
                         cart.add(product);
 
                         adapter.notifyDataSetChanged();
@@ -142,9 +134,6 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
                         if (calculateTotalPrice(cart)!=0){
                             totalPrice.setVisibility(View.VISIBLE);
                         }
-
-
-
                     }
                 } else {
                     task.getException();
@@ -165,8 +154,6 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
 
     @Override
     public void removeItem(int position) {
-
-
       dataB.collection("Users")
               .document(mAuth.getUid())
                 .collection("Shopping List")
@@ -192,6 +179,7 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
               }
           }
       });
+        Toast.makeText(getContext(), "Product removed from shopping cart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -216,26 +204,20 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
                                         .document(mAuth.getUid())
                                         .collection("Shopping List")
                                         .document(documentSnapshot.getId()).update("check",true);
-
                                         totalPrice.setText(Double.toString(calculateTotalPrice(cart)-cart.get(position).pris*cart.get(position).amount) + " kr");
-
                                 }
                             else{
                                 dataB.collection("Users")
                                         .document(mAuth.getUid())
                                         .collection("Shopping List")
                                         .document(documentSnapshot.getId()).update("check",false);
-
                                 adapter = new RecyclerViewListAdapter(getContext(),cart, ListFragment.this);
                                 recyclerView.setAdapter(adapter);
                                 totalPrice.setText(Double.toString(calculateTotalPrice(cart)) + " kr");
                             }
                         }
-
                     });
-
                 }
-
             }
         });
     }
@@ -313,13 +295,8 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
                             }
                         });
                     }
-
-
                 }
-
             }
         });
     }
-
-
 }

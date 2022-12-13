@@ -32,7 +32,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract CoopProductsDao coopProductsDao();
 
     public static synchronized AppDatabase getInstance(Context context)
-
     {
         if (instance == null)
         {
@@ -70,8 +69,6 @@ public abstract class AppDatabase extends RoomDatabase {
                 public void onSuccessProducts(List<CoopProducts> result) {
                     list = result;
                 }
-
-
             });
             coopProductsDao.insertAll(list);
             return null;

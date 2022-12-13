@@ -97,13 +97,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     String[] langArray = {"Cheapest", "Øko"};
     List<CoopProducts> results = new ArrayList<>();
 
-
-
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
-
 
         textViewStores = view.findViewById(R.id.textViewStores);
         selectedStores = new boolean[langArrayStores.length];
@@ -117,22 +112,17 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         mAuth = FirebaseAuth.getInstance();
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
-//        shoppingCart.coopProducts = coopProductsViewModel.getProducts();
-//        favoriteList.coopProducts = coopProductsViewModel.getProducts();
         coopProductsViewModel.getProducts().observe(getViewLifecycleOwner(), new Observer<List<CoopProducts>>() {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {
-                Toast.makeText(view.getContext(), "Changed", Toast.LENGTH_SHORT).show();
                 products = coopProducts;
-//                Log.e("Rest Respone", products.get(0).navn);
                 updateView(products);
             }
         });
 
-
-
         recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
         search = view.findViewById(R.id.searchBar);
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -221,13 +211,11 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                                 filteredProductsAfterStore.clear();
                                 filteredProductsAfterStore.addAll(getStore(products, "Coop 365"));
                                 updateView(filteredProductsAfterStore);
-                                Log.e("size:", Integer.toString(filteredProductsAfterStore.size()));
                                 break;
                             case "[false, false, false, false, false, true]":
                                 filteredProductsAfterStore.clear();
-                                filteredProductsAfterStore.addAll(getStore(products, "365discount"));
+                                filteredProductsAfterStore.addAll(getStore(products, "365discount "));
                                 updateView(filteredProductsAfterStore);
-                                Log.e("size:", Integer.toString(filteredProductsAfterStore.size()));
                                 break;
                             case "[true, true, false, false, false, false]":
                                 filteredProductsAfterStore.clear();
@@ -256,9 +244,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                             case "[false, false, false, false, true, true]":
                                 filteredProductsAfterStore.clear();
                                 filteredProductsAfterStore.addAll(getStore(products, "Coop 365"));
-                                filteredProductsAfterStore.addAll(getStore(products, "365discount"));
+                                filteredProductsAfterStore.addAll(getStore(products, "365discount "));
                                 updateView(filteredProductsAfterStore);
-                                Log.e("size:", Integer.toString(filteredProductsAfterStore.size()));
                                 break;
                             case "[true, true, true, false, false, false]":
                                 filteredProductsAfterStore.clear();
@@ -285,7 +272,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                                 filteredProductsAfterStore.clear();
                                 filteredProductsAfterStore.addAll(getStore(products, "Irma"));
                                 filteredProductsAfterStore.addAll(getStore(products, "Coop 365"));
-                                filteredProductsAfterStore.addAll(getStore(products, "365discount"));
+                                filteredProductsAfterStore.addAll(getStore(products, "365discount "));
                                 updateView(filteredProductsAfterStore);
                                 break;
                             case "[true, true, true, true, false, false]":
@@ -309,7 +296,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                                 filteredProductsAfterStore.addAll(getStore(products, "Dagli' Brugsen"));
                                 filteredProductsAfterStore.addAll(getStore(products, "Irma"));
                                 filteredProductsAfterStore.addAll(getStore(products, "Coop 365"));
-                                filteredProductsAfterStore.addAll(getStore(products, "365discount"));
+                                filteredProductsAfterStore.addAll(getStore(products, "365discount "));
                                 updateView(filteredProductsAfterStore);
                                 break;
                             case "[true, true, true, true, true, false]":
@@ -327,7 +314,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                                 filteredProductsAfterStore.addAll(getStore(products, "Dagli' Brugsen"));
                                 filteredProductsAfterStore.addAll(getStore(products, "Irma"));
                                 filteredProductsAfterStore.addAll(getStore(products, "Coop 365"));
-                                filteredProductsAfterStore.addAll(getStore(products, "365discount"));
+                                filteredProductsAfterStore.addAll(getStore(products, "365discount "));
                                 updateView(filteredProductsAfterStore);
                                 break;
                             case "[true, true, true, true, true, true]":
@@ -376,7 +363,6 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                 builder.show();
             }
         });
-
 
         //////////////////OPTIONS
         textViewOptions.setOnClickListener(new View.OnClickListener() {
@@ -484,7 +470,6 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                     public void onClick(DialogInterface dialogInterface, int i) {
                             langListDistance.add(i);
                             choice[0] = i;
-                            Log.e("choice", Integer.toString(choice[0]));
                     }
                 });
 
@@ -539,14 +524,11 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                                 filteredProductsAfterDistance.clear();
                                 textViewDistance[0].setText("10 km");
                                 filteredProductsAfterDistance.addAll(getKm(filteredProductsAfterOptions, 10.0));
-                                Log.e("1000km", Integer.toString(filteredProductsAfterDistance.size()));
                                 updateView(filteredProductsAfterDistance);
                                 break;
                             default: Log.e("msg", "default");
                         }
                     }
-
-
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
                     @Override
@@ -579,11 +561,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         boolean foundSimilarEan = false;
         for(int i=0; i<allProducts.size();i++){
             for (int j = i + 1; j < allProducts.size(); j++){
-                if(allProducts.get(i).ean ==allProducts.get(j).ean){
+                if(allProducts.get(i).ean.equals(allProducts.get(j).ean)){
                     foundSimilarEan = true;
-                    Log.e("similar ean", "yup");
-                    Log.e("1", allProducts.get(i).navn);
-                    Log.e("2", allProducts.get(j).navn);
                     if(allProducts.get(i).pris<allProducts.get(j).pris){
                         result.add(allProducts.get(i));
                     }
@@ -591,12 +570,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                         result.add(allProducts.get(j));
                     }
                 }
-                else{
-                    Log.e("no similar ean", "nope");
-                }
             }
             if (!foundSimilarEan){
-                Log.e("no similar ean found", Boolean.toString(foundSimilarEan));
                 result.add(allProducts.get(i));
             }
         }
@@ -611,20 +586,16 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                 result.add(allProducts.get(i));
             }
         }
-        for (int i=0; i<result.size();i++)
-            Log.e("distances", result.get(i).calculateDistanceString(mainActivity.locationTrack.loc));
         return result;
     }
 
     public List<CoopProducts> getStore(List<CoopProducts> allProducts, String storeName){
         List<CoopProducts> result = new ArrayList<>();
         for (int i=0; i<allProducts.size(); i++){
-            Log.e("store name", allProducts.get(i).store);
-            if(allProducts.get(i).store.toLowerCase().contains(storeName.toLowerCase())){
+            if(allProducts.get(i).store.contains(storeName)){
                 result.add(allProducts.get(i));
             }
         }
-        Log.e("store", storeName);
         return result;
     }
 
@@ -676,7 +647,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                 }
             }
         });
-        Log.e("added product:", products.get(position).navn);
+        Toast.makeText(getContext(), "Product added to shopping cart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -702,7 +673,6 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                 }
             }
         });
+        Toast.makeText(getContext(), "Product added to favorite list", Toast.LENGTH_SHORT).show();
     }
-
-
 }

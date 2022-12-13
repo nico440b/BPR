@@ -12,7 +12,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:textAlignment="center"
@@ -28,7 +27,6 @@
             android:layout_margin="5dp"
             android:layout_marginTop="15dp"
             app:cardCornerRadius="20dp"
-            app:cardElevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -48,7 +46,8 @@
 
 
                 <LinearLayout
-                    android:layout_width="190dp"
+                    android:layout_width="170dp"
+                    android:paddingTop="5dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
@@ -56,8 +55,6 @@
                         android:id="@+id/productNameText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="8dp"
                         android:ellipsize="end"
                         android:text="Name"
                         android:textColor="@color/black"
@@ -67,23 +64,30 @@
                         android:id="@+id/productName2Text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="8dp"
                         android:ellipsize="end"
                         android:text="Brand"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="10sp" />
+
 
                     <TextView
                         android:id="@+id/productStore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="8dp"
                         android:ellipsize="end"
                         android:text="Shop"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="10sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/addToCartButton"
+                        android:layout_width="140dp"
+                        android:layout_height="38dp"
+                        android:layout_centerHorizontal="true"
+                        android:backgroundTint="#949494"
+                        app:icon="@drawable/ic_baseline_add_shopping_cart_24"
+                        app:iconGravity="textStart" />
 
 
                 </LinearLayout>

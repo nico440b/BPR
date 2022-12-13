@@ -37,14 +37,16 @@ import java.util.List;
 
 public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerViewFavoriteAdapter.ViewHolder> {
     private List<CoopProducts> _data;
-    private RecyclerViewAdapter.OnButtonListener mOnButtonListener;
+    private OnButtonListener mOnButtonListener;
+    private OnAddCartListener mOnAddButtonListener;
     private FavoriteList favoriteList;
     Context mContext;
 
-    public RecyclerViewFavoriteAdapter(Context context, List<CoopProducts> data, RecyclerViewAdapter.OnButtonListener onButtonListener) {
+    public RecyclerViewFavoriteAdapter(Context context, List<CoopProducts> data, OnButtonListener onButtonListener, OnAddCartListener onAddCartListener) {
         this._data = data;
         this.mContext = context;
         this.mOnButtonListener = onButtonListener;
+        this.mOnAddButtonListener = onAddCartListener;
     }
 
     @NonNull
@@ -71,17 +73,22 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         });
 
+        holder.addToCartBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mOnAddButtonListener.onAddButtonClick(holder.getAdapterPosition());
+            }
+        });
     }
-
 
     @Override
     public int getItemCount() {
         if(_data != null){
             return _data.size();
         }
-        else
+        else {
             return 0;
-
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -89,6 +96,7 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
         TextView price;
         TextView name2;
         ImageButton deleteBtn;
+        Button addToCartBtn;
         TextView store;
 
         ViewHolder(View itemView){
@@ -96,16 +104,18 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
             name = itemView.findViewById(R.id.productNameText);
             name2 = itemView.findViewById(R.id.productName2Text);
             price = itemView.findViewById(R.id.price);
+            addToCartBtn = itemView.findViewById(R.id.addToCartButton);
             deleteBtn = itemView.findViewById(R.id.deleteButton);
             store = itemView.findViewById(R.id.productStore);
-
         }
-
     }
 
     public interface OnButtonListener{
         void onButtonClick(int position);
     }
 
+    public interface OnAddCartListener{
+        void onAddButtonClick(int position);
+    }
 
 }

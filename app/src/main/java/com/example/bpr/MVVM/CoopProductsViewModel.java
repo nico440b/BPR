@@ -27,12 +27,10 @@ public class CoopProductsViewModel extends AndroidViewModel {
     {
         repository.insertAll(coopProducts);
     }
-
     public void delete()
     {
         repository.delete();
     }
-
     public LiveData<List<CoopProducts>> getProducts() {
         return products;
     }
