@@ -20,7 +20,7 @@ public interface CoopStoreDao {
     @Query("Select * From coopstore")
     LiveData<List<CoopStore>> getAll();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<CoopStore> coopStores);
 
     @Query("Delete From coopstore")
