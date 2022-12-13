@@ -47,6 +47,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     @Override
     public int getItemCount() {
+        if(data.size()== 0){
+            return 0;
+        }
         return data.size();
     }
 

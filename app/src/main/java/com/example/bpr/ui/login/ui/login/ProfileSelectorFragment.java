@@ -8,19 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.bpr.Adapters.ProfileAdapter;
-import com.example.bpr.Adapters.RecyclerViewAdapter;
-import com.example.bpr.MainActivity;
-import com.example.bpr.MyAdapter;
 import com.example.bpr.Objects.Profile;
 import com.example.bpr.R;
 import com.example.bpr.ui.MainFragment;
@@ -29,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -36,10 +32,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,7 +48,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private ArrayList<Profile> profiles;
+    private ArrayList<Profile> profiles = new ArrayList<>();
 
     private ProfileAdapter adapter;
     private String uID;
@@ -70,7 +64,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     private AlertDialog dialog;
     private EditText profileName;
     private Button createBtn;
-    private String pID;
+    private String pID, pName;
     private ProgressBar pBar;
 
     public ProfileSelectorFragment() {
@@ -110,10 +104,11 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_selector, container, false);
-        MainActivity activity = (MainActivity) getActivity();
+
         uID = mParam1;
-        profiles = new ArrayList<Profile>();
-        pBar = view.findViewById(R.id.pBarProfileS);
+        mAuth = FirebaseAuth.getInstance();
+
+        pBar = view.findViewById(R.id.pBarProfileSelector);
 
         //TextView text = view.findViewById(R.id.ptext);
         FloatingActionButton btn = view.findViewById(R.id.floatingActionButton);
@@ -199,19 +194,17 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
             @Override
             public void onClick(View v) {
                 String uName = profileName.getText().toString();
+                pName = uName;
                 Map<String, Object> uPData = new HashMap<>();
                 uPData.put("Profile",uName);
-                dataB.collection("Users").document(uID).collection("Profiles").add(uPData).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<DocumentReference> task) {
-                        pID = task.getResult().getId();
+                CollectionReference profileRef = FirebaseFirestore.getInstance().collection("Users").document(mAuth.getUid()).collection("Profiles");
+                profileRef.add(uPData);
+                pID = profileRef.document().getId();
 
 
-                    }
-                });
-                updateProfiles();
-                updateView();
                 dialog.cancel();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragCV, MainFragment.newInstance(pName, pID)).commit();
+
             }
         });
     }
