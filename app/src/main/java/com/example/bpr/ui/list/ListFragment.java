@@ -71,7 +71,8 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
         subBtn = view.findViewById(R.id.removeBtn);
         //view.findViewById(R.id.divider2).setVisibility(View.INVISIBLE);
 
-        coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);dataB.collection("Users").document(mAuth.getUid()).collection("Shopping List").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
+        dataB.collection("Users").document(mAuth.getUid()).collection("Shopping List").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){

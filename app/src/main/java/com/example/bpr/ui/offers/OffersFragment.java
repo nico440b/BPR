@@ -30,7 +30,19 @@ import com.example.bpr.Objects.FavoriteList;
 import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
 import com.example.bpr.SpinnerStateV0;
+import com.example.bpr.ui.MainFragment;
+import com.example.bpr.ui.list.ListFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,17 +56,59 @@ public class OffersFragment extends Fragment implements RecyclerViewFavoriteAdap
 
     RecyclerView recyclerView;
     RecyclerViewFavoriteAdapter adapter;
+    private ArrayList<CoopProducts> favs = new ArrayList<>();
     private CoopProductsViewModel coopProductsViewModel;
+    private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_offers, container, false);
-
+        mAuth = FirebaseAuth.getInstance();
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         favoriteList.coopProducts = coopProductsViewModel.getProducts();
 
+        dataB.collection("Users")
+                .document(mAuth.getUid())
+                .collection("Profiles")
+                .document(MainFragment.profileID)
+                .collection("Favorites")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+
+                        CoopProducts product = new CoopProducts();
+
+                        product.setEan(document.getString("Ean"));
+                        product.setAmount(document.getDouble("amount"));
+                        product.setNavn(document.getString("navn"));
+                        product.setNavn2(document.getString("navn2"));
+                        product.setLatitude(document.getDouble("latitude"));
+                        product.setLongitude(document.getDouble("longitude"));
+                        product.setPris(document.getDouble("pris"));
+                        product.setStore(document.getString("store"));
+
+                        favs.add(product);
+
+                        recyclerView = view.findViewById(R.id.recyclerviewlist);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                        adapter = new RecyclerViewFavoriteAdapter(getContext(),favs, OffersFragment.this::onButtonClick);
+                        recyclerView.setAdapter(adapter);
+
+
+
+                    }
+                } else {
+                    task.getException();
+                }
+            }
+        });
+
+
         recyclerView = view.findViewById(R.id.recyclerviewlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new RecyclerViewFavoriteAdapter(getContext(),favoriteList.coopProducts.getValue(), this::onButtonClick);
+        adapter = new RecyclerViewFavoriteAdapter(getContext(),favs, OffersFragment.this::onButtonClick);
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -62,8 +116,32 @@ public class OffersFragment extends Fragment implements RecyclerViewFavoriteAdap
 
     @Override
     public void onButtonClick(int position) {
-        favoriteList.coopProducts.getValue().remove(favoriteList.coopProducts.getValue().get(position));
-        Log.e("deleted product: ", favoriteList.coopProducts.getValue().get(position).navn);
+        dataB.collection("Users")
+                .document(mAuth.getUid())
+                .collection("Profiles")
+                .document(MainFragment.profileID)
+                .collection("Favorites")
+                .whereEqualTo("navn",favs.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()){
+                    DocumentSnapshot snap  = task.getResult().getDocuments().get(0);
+                    String dID = snap.getId();
+                    dataB.collection("Users")
+                            .document(mAuth.getUid())
+                            .collection("Shopping List")
+                            .document(dID).delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    favs.remove(position);
+                                    adapter.notifyDataSetChanged();
+
+                                }
+                            });
+                }
+            }
+        });
     }
 
 }
