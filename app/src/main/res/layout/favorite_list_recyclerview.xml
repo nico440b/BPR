@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
     <LinearLayout
         android:id="@+id/list"
         android:layout_width="match_parent"
@@ -19,6 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileIDIndicator"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
@@ -56,6 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:layout_marginTop="8dp"
                         android:text="Name"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
@@ -64,31 +65,23 @@
                         android:id="@+id/productName2Text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:ellipsize="end"
                         android:text="Brand"
                         android:textColor="@color/black"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
 
                     <TextView
                         android:id="@+id/productStore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="8dp"
                         android:ellipsize="end"
                         android:text="Shop"
                         android:textColor="@color/black"
                         android:textSize="10sp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/addToCartButton"
-                        android:layout_width="140dp"
-                        android:layout_height="38dp"
-                        android:layout_centerHorizontal="true"
-                        android:backgroundTint="#949494"
-                        app:icon="@drawable/ic_baseline_add_shopping_cart_24"
-                        app:iconGravity="textStart" />
-
 
                 </LinearLayout>
 
@@ -97,10 +90,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <View
+                    <ImageButton
+                        android:id="@+id/deleteButton"
                         android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_weight="1" />
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/white"
+                        android:src="@drawable/ic_baseline_favorite_24" />
 
                     <TextView
                         android:id="@+id/price"
@@ -108,22 +103,17 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="right"
-                        android:layout_marginTop="7dp"
                         android:text="160,-"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        android:layout_weight="1" />
-
                     <ImageButton
-                        android:id="@+id/deleteButton"
+                        android:id="@+id/addToCartButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:backgroundTint="@color/white"
-                        android:src="@drawable/ic_baseline_favorite_24" />
+                        android:src="@drawable/ic_baseline_add_shopping_cart_24" />
+
                 </LinearLayout>
 
             </LinearLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,12 +48,17 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
     private CoopProductsViewModel coopProductsViewModel;
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
+    private TextView profileIndicator;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         mAuth = FirebaseAuth.getInstance();
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         favoriteList.coopProducts = coopProductsViewModel.getProducts();
+        profileIndicator = view.findViewById(R.id.profileIDIndicator);
+        profileIndicator.setText("Currently signed in as: " + MainFragment.profileName);
+
 
         dataB.collection("Users")
                 .document(mAuth.getUid())

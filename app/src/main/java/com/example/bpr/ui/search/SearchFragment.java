@@ -96,6 +96,9 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     ArrayList<Integer> langList = new ArrayList<>();
     String[] langArray = {"Cheapest", "Øko"};
     List<CoopProducts> results = new ArrayList<>();
+    TextView nothingFound;
+
+    private TextView profileIndicator;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -107,6 +110,12 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         selectedOptions = new boolean[langArray.length];
 
         textViewDistance[0] = view.findViewById(R.id.textViewDistance);
+
+        nothingFound = view.findViewById(R.id.nothingFound);
+        nothingFound.setVisibility(View.INVISIBLE);
+
+        profileIndicator = view.findViewById(R.id.profileIDIndicator);
+        profileIndicator.setText("Currently signed in as: " + MainFragment.profileName);
 
         FirebaseApp.initializeApp(getActivity());
         mAuth = FirebaseAuth.getInstance();
@@ -551,6 +560,12 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     }
 
     public void updateView(List<CoopProducts> updatedProducts){
+        if(updatedProducts.size()==0){
+            nothingFound.setVisibility(View.VISIBLE);
+        }
+        else{
+            nothingFound.setVisibility(View.INVISIBLE);
+        }
         adapter = new RecyclerViewAdapter(getContext(), updatedProducts, this::onButtonClick, this::onFavButtonClick);
         recyclerView.setAdapter(adapter);
     }

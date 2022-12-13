@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment implements ProfileAdapter.OnProfil
         });
 
         updateView();
-        profileIndicator.setText("Currently Signed In: " + MainFragment.profileName);
+        profileIndicator.setText("Currently signed in as: " + MainFragment.profileName);
         pBar.setVisibility(View.INVISIBLE);
 
         return view;
@@ -134,7 +134,7 @@ public class ProfileFragment extends Fragment implements ProfileAdapter.OnProfil
     public void onProfileClick(int position) {
         MainFragment.profileID = profiles.get(position).getID();
         MainFragment.profileName = profiles.get(position).getName();
-        profileIndicator.setText("Currently Signed In: " + MainFragment.profileName);
+        profileIndicator.setText("Currently signed in as: " + MainFragment.profileName);
     }
 
     public void createNewProfileDialog(){
@@ -159,7 +159,7 @@ public class ProfileFragment extends Fragment implements ProfileAdapter.OnProfil
 
                 MainFragment.profileName = pName;
                 MainFragment.profileID = pID;
-                profileIndicator.setText("Currently Signed In "+ MainFragment.profileName);
+                profileIndicator.setText("Currently signed in as:"+ MainFragment.profileName);
                 updateProfiles();
                 updateView();
                 adapter.notifyDataSetChanged();

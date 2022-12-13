@@ -96,7 +96,7 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
         TextView price;
         TextView name2;
         ImageButton deleteBtn;
-        Button addToCartBtn;
+        ImageButton addToCartBtn;
         TextView store;
 
         ViewHolder(View itemView){

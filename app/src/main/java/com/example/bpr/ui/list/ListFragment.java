@@ -27,6 +27,7 @@ import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.Objects.CoopProducts;
 import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
+import com.example.bpr.ui.MainFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -60,6 +61,7 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
     private TextView totalPrice;
     private View view;
     private Button addBtn, subBtn;
+    private TextView profileIndicator;
 
     private List<CoopProducts> cart = new ArrayList<>();
 
@@ -69,6 +71,9 @@ public class ListFragment extends Fragment implements RecyclerViewListAdapter.On
         totalPrice = view.findViewById(R.id.totalPrice);
         addBtn = view.findViewById(R.id.addBtn);
         subBtn = view.findViewById(R.id.removeBtn);
+        profileIndicator = view.findViewById(R.id.profileIDIndicator);
+        profileIndicator.setText("Currently signed in as: " + MainFragment.profileName);
+
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         dataB.collection("Users").document(mAuth.getUid()).collection("Shopping List").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

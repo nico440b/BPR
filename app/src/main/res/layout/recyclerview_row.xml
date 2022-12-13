@@ -71,6 +71,7 @@
                             android:id="@+id/addToCartButton"
                             android:layout_width="140dp"
                             android:layout_height="38dp"
+                            android:paddingRight="6dp"
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center"
                             android:backgroundTint="#949494"
