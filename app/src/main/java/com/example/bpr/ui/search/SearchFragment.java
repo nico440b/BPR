@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
     public FirebaseUser user;
+    private ProgressBar progressBar;
 
 
     List<CoopProducts> filteredProductsAfterStore = new ArrayList<>();
@@ -98,7 +100,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         profileIndicator.setText("Currently signed in as: " + MainFragment.profileName);
 
         FirebaseApp.initializeApp(getActivity());
-        mAuth = FirebaseAuth.getInstance();
+
+        progressBar = view.findViewById(R.id.pBarSearch);
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
         coopProductsViewModel
@@ -549,6 +552,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         }
         adapter = new RecyclerViewAdapter(getContext(), updatedProducts, this::onButtonClick, this::onFavButtonClick);
         recyclerView.setAdapter(adapter);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
 
