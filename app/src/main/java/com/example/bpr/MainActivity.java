@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //This works for some versions of Android only
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
