@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+//The implementation of adapters is inspired by our Sep4 Project https://github.com/BorislavAleksiev/ReExam_SEP4_Android/tree/master/app/src/main/java/adapter
+
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder>{
     private List<Profile> data;
     Context mContext;

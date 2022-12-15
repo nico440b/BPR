@@ -19,6 +19,8 @@ import com.example.bpr.R;
 import java.util.ArrayList;
 import java.util.List;
 
+//The implementation of adapters is inspired by our Sep4 Project https://github.com/BorislavAleksiev/ReExam_SEP4_Android/tree/master/app/src/main/java/adapter
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements Filterable {
     private List<CoopProducts> _data;
     private List<CoopProducts> _dataFull;
@@ -77,6 +79,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return _data.size();
     }
 
+    // This part was implemented with inspiration from https://www.youtube.com/watch?v=sJ-Z9G0SDhc
     @Override
     public Filter getFilter() {
         return searchFilter;

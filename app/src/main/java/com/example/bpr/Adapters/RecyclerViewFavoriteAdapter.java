@@ -15,6 +15,8 @@ import com.example.bpr.R;
 
 import java.util.List;
 
+//The implementation of adapters is inspired by our Sep4 Project https://github.com/BorislavAleksiev/ReExam_SEP4_Android/tree/master/app/src/main/java/adapter
+
 public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerViewFavoriteAdapter.ViewHolder> {
     private List<CoopProducts> _data;
     private OnButtonListener mOnButtonListener;

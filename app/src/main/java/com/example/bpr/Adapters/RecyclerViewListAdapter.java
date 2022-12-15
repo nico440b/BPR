@@ -19,6 +19,8 @@ import com.example.bpr.R;
 
 import java.util.List;
 
+//The implementation of adapters is inspired by our Sep4 Project https://github.com/BorislavAleksiev/ReExam_SEP4_Android/tree/master/app/src/main/java/adapter
+
 public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.ViewHolder> {
     private List<CoopProducts> _data;
     private boolean isPlay = false;
