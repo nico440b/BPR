@@ -69,13 +69,13 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_navigation_main, container, false);
         BottomNavigationView navView = view.findViewById(R.id.nav_view);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_offers, R.id.navigation_search, R.id.navigation_list, R.id.navigation_profile)
+                R.id.navigation_favorites, R.id.navigation_search, R.id.navigation_list, R.id.navigation_profile)
                 .build();
-        NavController navController = Navigation.findNavController(view.findViewById(R.id.nav_host_fragment_activity_main));
+        NavController navController = Navigation.findNavController(view.findViewById(R.id.nav_host_fragment_navigation_main));
         NavigationUI.setupWithNavController(navView, navController);
         return view;
     }

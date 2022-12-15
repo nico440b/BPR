@@ -1,45 +1,24 @@
 package com.example.bpr.Adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopProducts;
-import com.example.bpr.Objects.FavoriteList;
-import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
-import com.google.android.material.button.MaterialButton;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerViewFavoriteAdapter.ViewHolder> {
     private List<CoopProducts> _data;
     private OnButtonListener mOnButtonListener;
     private OnAddCartListener mOnAddButtonListener;
-    private FavoriteList favoriteList;
     Context mContext;
 
     public RecyclerViewFavoriteAdapter(Context context, List<CoopProducts> data, OnButtonListener onButtonListener, OnAddCartListener onAddCartListener) {

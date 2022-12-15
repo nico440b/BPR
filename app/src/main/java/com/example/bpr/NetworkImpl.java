@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class NetworkImpl {
     CoopStoreCore main = new CoopStoreCore();
-    private String coopKey = "d22345c48d8a4472840a1eff80e74005";
+    private String coopKey = "dc9fa0d1b81e4807bad6fb98e07153c5";
 
     public ArrayList<CoopProducts> getCoopProducts(String store, int kardex, Location location,final VolleyCallBack callBack) {
         //gets all products for a specific store

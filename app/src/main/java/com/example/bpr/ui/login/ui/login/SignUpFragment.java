@@ -18,7 +18,7 @@ import com.example.bpr.MainActivity;
 import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopStoreCore;
 import com.example.bpr.R;
-import com.example.bpr.databinding.ActivityMainBinding;
+
 import com.example.bpr.ui.MainFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,7 +50,7 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth mAuth;
     private String email,password, name;
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
-    public FirebaseUser user;
+    private FirebaseUser user;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -109,10 +109,14 @@ public class SignUpFragment extends Fragment {
                 else {
                     signUp(email,password,name);
                     signIn(email,password);
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragCV, MainFragment.newInstance(user.getUid(),"")).commit();
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragCV, MainFragment.newInstance(user.getUid(),""))
+                            .commit();
                 }
             }
         });
+
         return view;
     }
 

@@ -4,24 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopProducts;
-import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +24,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<CoopProducts> _dataFull;
     private boolean isPlay = false;
     Context mContext;
-    private ShoppingCart shoppingCart;
+
     private OnButtonListener mOnButtonListener;
     private OnFavButtonListener mOnFavButtonListener;
 
 
     public RecyclerViewAdapter(Context context, List<CoopProducts> data, OnButtonListener onButtonListener, OnFavButtonListener onFavButtonListener){
+        _dataFull = new ArrayList<>();
+        _dataFull = data;
         this._data = data;
         this.mContext = context;
         this.mOnButtonListener = onButtonListener;
         this.mOnFavButtonListener = onFavButtonListener;
-        _dataFull = new ArrayList<>(_data);
     }
 
     @NonNull

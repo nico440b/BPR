@@ -1,52 +1,33 @@
 package com.example.bpr.ui.search;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.SearchView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bpr.Adapters.RecyclerViewAdapter;
-import com.example.bpr.Adapters.RecyclerViewListAdapter;
-import com.example.bpr.LocationTrack;
 import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.MainActivity;
-import com.example.bpr.MyAdapter;
 import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopProducts;
-import com.example.bpr.Objects.FavoriteList;
-import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
-import com.example.bpr.SpinnerStateV0;
-import com.example.bpr.VolleyCallBack;
 import com.example.bpr.ui.MainFragment;
-import com.example.bpr.ui.list.ListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,7 +41,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -74,8 +54,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
     public FirebaseUser user;
-    ShoppingCart shoppingCart = new ShoppingCart();
-    FavoriteList favoriteList = new FavoriteList();
+
+
     List<CoopProducts> filteredProductsAfterStore = new ArrayList<>();
     List<CoopProducts> filteredProductsAfterOptions = new ArrayList<>();
     List<CoopProducts> filteredProductsAfterDistance = new ArrayList<>();
@@ -121,7 +101,9 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         mAuth = FirebaseAuth.getInstance();
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
-        coopProductsViewModel.getProducts().observe(getViewLifecycleOwner(), new Observer<List<CoopProducts>>() {
+        coopProductsViewModel
+                .getProducts()
+                .observe(getViewLifecycleOwner(), new Observer<List<CoopProducts>>() {
             @Override
             public void onChanged(List<CoopProducts> coopProducts) {
                 products = coopProducts;
@@ -626,20 +608,25 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     }
 
     @Override
+
     public void onButtonClick(int position) {
         dataB.collection("Users")
                 .document(mAuth.getUid())
                 .collection("Shopping List")
-                .whereEqualTo("navn",products.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("navn",products.get(position).navn)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()){
                     DocumentSnapshot snap  = task.getResult().getDocuments().get(0);
                     String dID = snap.getId();
+
                     dataB.collection("Users")
                             .document(mAuth.getUid())
                             .collection("Shopping List")
-                            .document(dID).update("amount", FieldValue.increment(1));
+                            .document(dID)
+                            .update("amount", FieldValue.increment(1));
 
                     dataB.collection("Users")
                             .document(mAuth.getUid())
@@ -650,7 +637,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                     dataB.collection("Users")
                             .document(mAuth.getUid())
                             .collection("Shopping List")
-                            .add(products.get(position)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            .add(products.get(position))
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             dataB.collection("Users")
@@ -672,11 +660,13 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                 .collection("Profiles")
                 .document(MainFragment.profileID)
                 .collection("Favorites")
-                .whereEqualTo("navn",products.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("navn",products.get(position).navn)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()){
-
+                    Toast.makeText(getContext(), "Product already in favorites", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     dataB.collection("Users")

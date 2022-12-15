@@ -141,7 +141,10 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     }
 
     public void getProfiles(){
-        dataB.collection("Users").document(uID).collection("Profiles").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        dataB.collection("Users")
+                .document(uID).collection("Profiles")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -160,7 +163,11 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     }
 
     public void updateProfiles(){
-        dataB.collection("Users").document(uID).collection("Profiles").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        dataB.collection("Users")
+                .document(uID)
+                .collection("Profiles")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -178,7 +185,14 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
 
     @Override
     public void onProfileClick(int position) {
-        getParentFragmentManager().beginTransaction().replace(R.id.fragCV, MainFragment.newInstance(profiles.get(position).getName(),profiles.get(position).getID())).commit();
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragCV, MainFragment.newInstance(profiles
+                        .get(position)
+                        .getName(),profiles
+                        .get(position)
+                        .getID()))
+                .commit();
     }
 
     public void createNewProfileDialog(){
@@ -197,13 +211,20 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
                 pName = uName;
                 Map<String, Object> uPData = new HashMap<>();
                 uPData.put("Profile",uName);
-                CollectionReference profileRef = FirebaseFirestore.getInstance().collection("Users").document(mAuth.getUid()).collection("Profiles");
+                CollectionReference profileRef = FirebaseFirestore
+                        .getInstance()
+                        .collection("Users")
+                        .document(mAuth.getUid())
+                        .collection("Profiles");
                 profileRef.add(uPData);
                 pID = profileRef.document().getId();
 
 
                 dialog.cancel();
-                getParentFragmentManager().beginTransaction().replace(R.id.fragCV, MainFragment.newInstance(pName, pID)).commit();
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragCV, MainFragment.newInstance(pName, pID))
+                        .commit();
 
             }
         });

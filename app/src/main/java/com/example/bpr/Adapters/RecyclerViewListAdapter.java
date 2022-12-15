@@ -1,40 +1,22 @@
 package com.example.bpr.Adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopProducts;
-import com.example.bpr.Objects.ShoppingCart;
 import com.example.bpr.R;
-import com.google.android.material.button.MaterialButton;
 
-import org.w3c.dom.Text;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.ViewHolder> {
@@ -42,7 +24,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
     private boolean isPlay = false;
     private RecyclerViewListAdapter.OnButtonListener mOnButtonListener;
 
-    private ShoppingCart shoppingCart;
+
     Context mContext;
 
     public RecyclerViewListAdapter(Context context, List<CoopProducts> data, RecyclerViewListAdapter.OnButtonListener onButtonListener) {

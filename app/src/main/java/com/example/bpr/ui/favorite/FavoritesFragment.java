@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bpr.Adapters.RecyclerViewFavoriteAdapter;
 import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.Objects.CoopProducts;
-import com.example.bpr.Objects.FavoriteList;
 import com.example.bpr.R;
 import com.example.bpr.ui.MainFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,7 +39,7 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
     Spinner dropdown;
     boolean isPlay;
     // get from firebase
-    FavoriteList favoriteList = new FavoriteList();
+
 
     RecyclerView recyclerView;
     RecyclerViewFavoriteAdapter adapter;
@@ -55,7 +54,7 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         mAuth = FirebaseAuth.getInstance();
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
-        favoriteList.coopProducts = coopProductsViewModel.getProducts();
+
         profileIndicator = view.findViewById(R.id.profileIDIndicator);
         profileIndicator.setText("Currently signed in as: " + MainFragment.profileName);
 
@@ -65,7 +64,8 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
                 .collection("Profiles")
                 .document(MainFragment.profileID)
                 .collection("Favorites")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -83,11 +83,7 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
                         product.setStore(document.getString("store"));
 
                         favs.add(product);
-
-                        recyclerView = view.findViewById(R.id.recyclerviewlist);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                        adapter = new RecyclerViewFavoriteAdapter(getContext(),favs, FavoritesFragment.this::onButtonClick, FavoritesFragment.this::onAddButtonClick);
-                        recyclerView.setAdapter(adapter);
+                        initRecycler(view);
                     }
                 } else {
                     task.getException();
@@ -103,6 +99,13 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
         return view;
     }
 
+    public void initRecycler(View view){
+        recyclerView = view.findViewById(R.id.recyclerviewlist);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        adapter = new RecyclerViewFavoriteAdapter(getContext(),favs, FavoritesFragment.this::onButtonClick, FavoritesFragment.this::onAddButtonClick);
+        recyclerView.setAdapter(adapter);
+    }
+
     @Override
     public void onButtonClick(int position) {
         dataB.collection("Users")
@@ -110,7 +113,9 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
                 .collection("Profiles")
                 .document(MainFragment.profileID)
                 .collection("Favorites")
-                .whereEqualTo("navn",favs.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("navn",favs.get(position).navn)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()){
@@ -138,7 +143,9 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
         dataB.collection("Users")
                 .document(mAuth.getUid())
                 .collection("Shopping List")
-                .whereEqualTo("navn",favs.get(position).navn).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("navn",favs.get(position).navn)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()){
@@ -158,7 +165,8 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
                             dataB.collection("Users")
                                     .document(mAuth.getUid())
                                     .collection("Shopping List")
-                                    .add(favs.get(position)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    .add(favs.get(position))
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {
                                             dataB.collection("Users")

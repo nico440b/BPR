@@ -6,7 +6,7 @@
     app:startDestination="@+id/navigation_search">
 
     <fragment
-        android:id="@+id/navigation_offers"
+        android:id="@+id/navigation_favorites"
         android:name="com.example.bpr.ui.favorite.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
@@ -29,3 +29,6 @@
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
+
+
+

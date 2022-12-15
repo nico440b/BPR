@@ -13,26 +13,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.bpr.MVVM.CoopProducts.CoopProductsViewModel;
 import com.example.bpr.MVVM.CoopStores.CoopStoresViewModel;
 import com.example.bpr.Objects.CoopProducts;
 import com.example.bpr.Objects.CoopStore;
-import com.example.bpr.Objects.CoopStoreCore;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -42,9 +32,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.bpr.databinding.ActivityMainBinding;
+
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -56,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private String email,password;
-    private ActivityMainBinding binding;
+
     public static Context context;
     private NetworkImpl network = new NetworkImpl();
 
@@ -88,8 +77,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+
 
         coopStoresViewModel = ViewModelProviders.of(this).get(CoopStoresViewModel.class);
         permissions.add(ACCESS_FINE_LOCATION);
@@ -141,14 +132,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user){
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fragment_navigation_main);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_offers, R.id.navigation_search, R.id.navigation_list, R.id.navigation_profile)
+                R.id.navigation_favorites, R.id.navigation_search, R.id.navigation_list, R.id.navigation_profile)
                 .build();
-        NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_activity_main);
+        NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_navigation_main);
         NavigationUI.setupWithNavController(navView, navController);
     }
     private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {

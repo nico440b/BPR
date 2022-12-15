@@ -27,7 +27,7 @@ import com.example.bpr.MainActivity;
 import com.example.bpr.NetworkImpl;
 import com.example.bpr.Objects.CoopStoreCore;
 import com.example.bpr.R;
-import com.example.bpr.databinding.ActivityMainBinding;
+
 import com.example.bpr.ui.MainFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -101,10 +101,14 @@ public class LoginFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
         pBar = view.findViewById(R.id.pBarLog);
         pBar.setVisibility(View.INVISIBLE);
+
         FirebaseApp.initializeApp(getContext());
         mAuth = FirebaseAuth.getInstance();
+
+
         Button loginBtn = view.findViewById(R.id.loginBtn);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         EditText mail = view.findViewById(R.id.mailField);
         EditText pw = view.findViewById(R.id.pwField);
         TextView signUp = view.findViewById(R.id.signupText);
@@ -118,14 +122,10 @@ public class LoginFragment extends Fragment {
                 password = pw.getText().toString();
                 if (email.equals("")||password.equals("")){
                     Toast.makeText(getContext(),"Fill In All The Fields",Toast.LENGTH_LONG).show();
-
                 }
                 else {
                     signIn(email,password);
-
-
                 }
-
             }
         });
 
@@ -148,13 +148,15 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
-                            getParentFragmentManager().beginTransaction().replace(R.id.fragCV, ProfileSelectorFragment.newInstance(user.getUid(),"")).commit();
+                            getParentFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.fragCV, ProfileSelectorFragment.newInstance(user.getUid(),""))
+                                    .commit();
 
 
                         } else {
-
+                            Toast.makeText(getContext(), "Log In Failed", Toast.LENGTH_LONG).show();
                         }
-
                     }
                 });
     }
