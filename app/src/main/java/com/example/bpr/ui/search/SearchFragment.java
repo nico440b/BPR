@@ -132,8 +132,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
             }
         });
 
+        // This code was done using the following link as a source: https://github.com/codingdemos/MultichoiceTutorial
         //--------STORES
-
         textViewStores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -355,7 +355,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
             }
         });
 
-        //////////////////OPTIONS
+        //--------OPTIONS
         textViewOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -447,8 +447,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
             }
         });
 
-        /////////////////// DISTANCE
-
+        //--------DISTANCE
         textViewDistance[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -600,7 +599,8 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
         List<CoopProducts> result = new ArrayList<>();
         String filter = "øko";
         for (int i=0; i<allProducts.size(); i++){
-            if(allProducts.get(i).navn.toLowerCase().contains(filter.toLowerCase()) || allProducts.get(i).navn2.toLowerCase().contains(filter.toLowerCase())){
+            if(allProducts.get(i).navn.toLowerCase().contains(filter.toLowerCase()) ||
+                    allProducts.get(i).navn2.toLowerCase().contains(filter.toLowerCase())){
                 result.add(allProducts.get(i));
             }
         }
