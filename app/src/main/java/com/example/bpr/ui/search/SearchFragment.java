@@ -101,6 +101,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
 
         FirebaseApp.initializeApp(getActivity());
 
+        mAuth = FirebaseAuth.getInstance();
         progressBar = view.findViewById(R.id.pBarSearch);
 
         coopProductsViewModel = ViewModelProviders.of(this).get(CoopProductsViewModel.class);
