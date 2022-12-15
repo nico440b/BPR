@@ -51,7 +51,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
     private ArrayList<Profile> profiles = new ArrayList<>();
 
     private ProfileAdapter adapter;
-    private String uID;
+    private String uID, uID2;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -106,7 +106,9 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
         View view = inflater.inflate(R.layout.fragment_profile_selector, container, false);
 
         uID = mParam1;
+
         mAuth = FirebaseAuth.getInstance();
+        uID2 = mAuth.getCurrentUser().getUid();
 
         pBar = view.findViewById(R.id.pBarProfileSelector);
 
@@ -142,7 +144,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
 
     public void getProfiles(){
         dataB.collection("Users")
-                .document(uID).collection("Profiles")
+                .document(uID2).collection("Profiles")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -164,7 +166,7 @@ public class ProfileSelectorFragment extends Fragment implements ProfileAdapter.
 
     public void updateProfiles(){
         dataB.collection("Users")
-                .document(uID)
+                .document(uID2)
                 .collection("Profiles")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

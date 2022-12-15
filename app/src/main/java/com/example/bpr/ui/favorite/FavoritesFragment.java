@@ -123,7 +123,9 @@ public class FavoritesFragment extends Fragment implements RecyclerViewFavoriteA
                     String dID = snap.getId();
                     dataB.collection("Users")
                             .document(mAuth.getUid())
-                            .collection("Shopping List")
+                            .collection("Profiles")
+                            .document(MainFragment.profileID)
+                            .collection("Favorites")
                             .document(dID).delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

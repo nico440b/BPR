@@ -152,7 +152,10 @@ public class ProfileFragment extends Fragment implements ProfileAdapter.OnProfil
                 String uName = profileName.getText().toString();
                 Map<String, Object> uPData = new HashMap<>();
                 uPData.put("Profile",uName);
-                CollectionReference profileRef = FirebaseFirestore.getInstance().collection("Users").document(mAuth.getUid()).collection("Profiles");
+                CollectionReference profileRef = FirebaseFirestore.getInstance()
+                        .collection("Users")
+                        .document(mAuth.getUid())
+                        .collection("Profiles");
                 profileRef.add(uPData);
                 pID = profileRef.document().getId();
                 pName = uName;

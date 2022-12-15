@@ -56,7 +56,7 @@ public class LoginFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private String email,password, name;
+    private String email,password, name, uID;
     private FirebaseAuth mAuth;
     private FirebaseFirestore dataB = FirebaseFirestore.getInstance();
     public FirebaseUser user;
@@ -112,6 +112,7 @@ public class LoginFragment extends Fragment {
         EditText mail = view.findViewById(R.id.mailField);
         EditText pw = view.findViewById(R.id.pwField);
         TextView signUp = view.findViewById(R.id.signupText);
+
         FragmentContainerView fragmentContainerView = view.findViewById(R.id.fragCV);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
