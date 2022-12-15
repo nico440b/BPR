@@ -108,11 +108,6 @@ public class SignUpFragment extends Fragment {
                 }
                 else {
                     signUp(email,password,name);
-                    signIn(email,password);
-                    getParentFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragCV, MainFragment.newInstance(user.getUid(),""))
-                            .commit();
                 }
             }
         });
@@ -126,7 +121,7 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            user = mAuth.getCurrentUser();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             String uMail = user.getEmail();
                             String uID = user.getUid();
@@ -140,8 +135,14 @@ public class SignUpFragment extends Fragment {
 
                             db.collection("Users").document(uID).set(uData);
                             db.collection("Users").document(uID).collection("Profiles").document().set(uPData);
+
+                            signIn(name, password);
+                            getParentFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.fragCV, ProfileSelectorFragment.newInstance(user.getUid(),""))
+                                    .commit();
                         } else {
-                            Toast.makeText(getActivity(), "Authentication failed.",
+                            Toast.makeText(getContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -156,7 +157,6 @@ public class SignUpFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
-
                         } else {
 
                         }
