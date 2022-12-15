@@ -610,10 +610,27 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
     @Override
 
     public void onButtonClick(int position) {
+        List<CoopProducts> productsToCart = new ArrayList<>();
+        if(filteredProductsAfterDistance.size()==0){
+            if(filteredProductsAfterOptions.size()==0){
+                if(filteredProductsAfterStore.size()==0){
+                    productsToCart.addAll(products);
+                }
+                else{
+                    productsToCart.addAll(filteredProductsAfterStore);
+                }
+            }
+            else {
+                productsToCart.addAll(filteredProductsAfterOptions);
+            }
+        }
+        else{
+            productsToCart.addAll(filteredProductsAfterDistance);
+        }
         dataB.collection("Users")
                 .document(mAuth.getUid())
                 .collection("Shopping List")
-                .whereEqualTo("navn",products.get(position).navn)
+                .whereEqualTo("navn",productsToCart.get(position).navn)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -637,7 +654,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                     dataB.collection("Users")
                             .document(mAuth.getUid())
                             .collection("Shopping List")
-                            .add(products.get(position))
+                            .add(productsToCart.get(position))
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
@@ -655,12 +672,29 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
 
     @Override
     public void onFavButtonClick(int position){
+        List<CoopProducts> productsToFav = new ArrayList<>();
+        if(filteredProductsAfterDistance.size()==0){
+            if(filteredProductsAfterOptions.size()==0){
+                if(filteredProductsAfterStore.size()==0){
+                    productsToFav.addAll(products);
+                }
+                else{
+                    productsToFav.addAll(filteredProductsAfterStore);
+                }
+            }
+            else {
+                productsToFav.addAll(filteredProductsAfterOptions);
+            }
+        }
+        else{
+            productsToFav.addAll(filteredProductsAfterDistance);
+        }
         dataB.collection("Users")
                 .document(mAuth.getUid())
                 .collection("Profiles")
                 .document(MainFragment.profileID)
                 .collection("Favorites")
-                .whereEqualTo("navn",products.get(position).navn)
+                .whereEqualTo("navn",productsToFav.get(position).navn)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -674,7 +708,7 @@ public class SearchFragment extends Fragment implements RecyclerViewAdapter.OnBu
                             .collection("Profiles")
                             .document(MainFragment.profileID)
                             .collection("Favorites")
-                            .add(products.get(position));
+                            .add(productsToFav.get(position));
                 }
             }
         });
